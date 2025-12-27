@@ -42,7 +42,7 @@ namespace MoodleApplication.Application.Common.Model
 
         }
 
-        public void SetUnaAuthorizedResult() { 
+        public void SetUnauthorizedResult() { 
 
 
             Value = null;
