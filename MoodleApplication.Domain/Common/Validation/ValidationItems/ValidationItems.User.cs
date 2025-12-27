@@ -4,7 +4,7 @@ using MoodleApplication.Domain.Enumumerations.Validations;
 
 namespace MoodleApplication.Domain.Common.Validation.ValidationItems
 {
-    public class ValidationItems
+    public class UserValidationItems
     {
         public static string CodePrefix = nameof(User);
 
