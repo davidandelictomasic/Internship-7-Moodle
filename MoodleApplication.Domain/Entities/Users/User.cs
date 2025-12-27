@@ -17,7 +17,7 @@ namespace MoodleApplication.Domain.Entities.Users
         public UserRole Role { get; private set; }
 
         
-        public ICollection<Course> Enrollments { get; private set; } = [];
+        public ICollection<CourseStudent> Enrollments { get; private set; } = [];
         public ICollection<Course> TeachingCourses { get; private set; } = [];
         public ICollection<Message> SentMessages { get; private set; } = [];
         public ICollection<Message> ReceivedMessages { get; private set; } = [];
