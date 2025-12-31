@@ -20,18 +20,18 @@ namespace MoodleApplication.Domain.Entities.Users
 
         public UserRole Role { get; private set; }
 
-        
+
         public ICollection<CourseStudent> Enrollments { get; private set; } = [];
         public ICollection<Course> TeachingCourses { get; private set; } = [];
         public ICollection<Message> SentMessages { get; private set; } = [];
         public ICollection<Message> ReceivedMessages { get; private set; } = [];
 
-        
+
         public const int NameMaxLength = 50;
         public const int EmailMaxLength = 100;
         public const int PasswordHashMaxLength = 256;
 
-        
+
 
         public User(string email, string passwordHash)
         {
@@ -56,8 +56,8 @@ namespace MoodleApplication.Domain.Entities.Users
         {
             var validationResult = new ValidationResult();
             if (Name?.Length > NameMaxLength)
-                validationResult.AddValidationItem(UserValidationItems.NameMaxLength);            
-            
+                validationResult.AddValidationItem(UserValidationItems.NameMaxLength);
+
             return validationResult;
 
         }
@@ -71,5 +71,4 @@ namespace MoodleApplication.Domain.Entities.Users
             return new Result<bool>(true, validationResult);
         }
     }
-}
 }
