@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodleApplication.Domain", "MoodleApplication.Domain\MoodleApplication.Domain.csproj", "{E50A88AD-4C52-4976-99E2-0B5CA1751E70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodleApplication.Application", "MoodleApplication.Application\MoodleApplication.Application.csproj", "{F4EDA64C-F0F1-4DEF-A29C-727BB10E7685}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{E50A88AD-4C52-4976-99E2-0B5CA1751E70}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E50A88AD-4C52-4976-99E2-0B5CA1751E70}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E50A88AD-4C52-4976-99E2-0B5CA1751E70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4EDA64C-F0F1-4DEF-A29C-727BB10E7685}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4EDA64C-F0F1-4DEF-A29C-727BB10E7685}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4EDA64C-F0F1-4DEF-A29C-727BB10E7685}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4EDA64C-F0F1-4DEF-A29C-727BB10E7685}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
