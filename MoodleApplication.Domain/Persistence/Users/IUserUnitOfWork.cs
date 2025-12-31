@@ -4,7 +4,7 @@ namespace MoodleApplication.Domain.Persistence.Users
 {
     public interface IUserUnitOfWork : IUnitOfWork
     {
-        IUserRepository Repository { get; }
+        IUserRepository UserRepository { get; }
 
     }
 }
