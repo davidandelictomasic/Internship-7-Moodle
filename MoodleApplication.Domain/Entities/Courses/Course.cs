@@ -15,11 +15,11 @@ namespace MoodleApplication.Domain.Entities.Courses
         public ICollection<Material> Materials { get; private set; } = [];
 
 
-        public Course(string name, User professor)
-        {
-            Name = name;
-            Professor = professor;
-            ProfessorId = professor.Id;
-        }
+        //public Course(string name, User professor)
+        //{
+        //    Name = name;
+        //    Professor = professor;
+        //    ProfessorId = professor.Id;
+        //}
     }
 }

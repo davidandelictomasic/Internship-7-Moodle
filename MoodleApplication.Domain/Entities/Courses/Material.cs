@@ -13,13 +13,13 @@ namespace MoodleApplication.Domain.Entities.Courses
         public DateTime AddedAt { get; private set; } = DateTime.UtcNow;
 
 
-        public Material(Course course, string name, string url)
-        {
-            Course = course;
-            CourseId = course.Id;
-            Name = name;
-            Url = url;
-            AddedAt = DateTime.UtcNow;
-        }
+        //public Material(Course course, string name, string url)
+        //{
+        //    Course = course;
+        //    CourseId = course.Id;
+        //    Name = name;
+        //    Url = url;
+        //    AddedAt = DateTime.UtcNow;
+        //}
     }
 }

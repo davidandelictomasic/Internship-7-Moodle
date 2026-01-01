@@ -17,13 +17,13 @@ namespace MoodleApplication.Domain.Entities.Chats
             public ICollection<Message> Messages { get; private set; } = [];
 
 
-            public ChatRoom(User firstUser, User secondUser)
-            {
-                FirstUser = firstUser;
-                FirstUserId = firstUser.Id;
-                SecondUser = secondUser;
-                SecondUserId = secondUser.Id;
-            }
+            //public ChatRoom(User firstUser, User secondUser)
+            //{
+            //    FirstUser = firstUser;
+            //    FirstUserId = firstUser.Id;
+            //    SecondUser = secondUser;
+            //    SecondUserId = secondUser.Id;
+            //}
         }
     
 }
