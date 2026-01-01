@@ -2,6 +2,7 @@
 using MoodleApplication.Domain.Entities.Chats;
 using MoodleApplication.Domain.Entities.Courses;
 using MoodleApplication.Domain.Entities.Users;
+using MoodleApplication.Infrastructure.Database.Seed;
 
 namespace MoodleApplication.Infrastructure.Database
 {
@@ -24,6 +25,7 @@ namespace MoodleApplication.Infrastructure.Database
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
             modelBuilder.HasDefaultSchema("public");
+            DatabaseSeeder.SeedData(modelBuilder);
         }
     }
 }

@@ -5,14 +5,13 @@ namespace MoodleApplication.Domain.Entities.Courses
 {
     public class CourseStudent
     {
-        public int UserId { get; private set; }
-        public User Student { get; private set; } = null!;
+        public int UserId { get;  set; }
+        public User Student { get;  set; } = null!;
 
-        public int CourseId { get; private set; }
-        public Course Course { get; private set; } = null!;
+        public int CourseId { get;  set; }
+        public Course Course { get;  set; } = null!;
 
-        public DateTime EnrolledAt { get; private set; } = DateTime.UtcNow;
-
+        public DateTime EnrolledAt { get;  set; } = DateTime.UtcNow;
 
         //public CourseStudent(User student, Course course)
         //{

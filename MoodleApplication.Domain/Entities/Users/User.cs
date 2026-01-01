@@ -10,7 +10,7 @@ namespace MoodleApplication.Domain.Entities.Users
 {
     public class User
     {
-        public int Id { get; private set; }
+        public int Id { get;  set; }
 
         public string Email { get;  set; } = null!;
         public string PasswordHash { get;  set; } = null!;

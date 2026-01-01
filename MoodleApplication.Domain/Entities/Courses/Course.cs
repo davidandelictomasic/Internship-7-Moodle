@@ -4,11 +4,11 @@ namespace MoodleApplication.Domain.Entities.Courses
 {
     public class Course
     {
-        public int Id { get; private set; }
-        public string Name { get; private set; } = null!;
+        public int Id { get;  set; }
+        public string Name { get;  set; } = null!;
 
-        public int ProfessorId { get; private set; }
-        public User Professor { get; private set; } = null!;
+        public int ProfessorId { get;  set; }
+        public User Professor { get;  set; } = null!;
 
         public ICollection<CourseStudent> Enrollments { get; private set; } = [];
         public ICollection<Announcement> Announcements { get; private set; } = [];

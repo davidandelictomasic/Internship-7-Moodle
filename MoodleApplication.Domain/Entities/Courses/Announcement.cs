@@ -5,17 +5,17 @@ namespace MoodleApplication.Domain.Entities.Courses
 {
     public class Announcement
     {
-        public int Id { get; private set; }
+        public int Id { get;  set; }
 
-        public int CourseId { get; private set; }
-        public Course Course { get; private set; } = null!;
+        public int CourseId { get;  set; }
+        public Course Course { get;  set; } = null!;
 
-        public int ProfessorId { get; private set; }
-        public User Professor { get; private set; } = null!;
+        public int ProfessorId { get;  set; }
+        public User Professor { get;  set; } = null!;
 
-        public string Title { get; private set; } = null!;
-        public string Content { get; private set; } = null!;
-        public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
+        public string Title { get;  set; } = null!;
+        public string Content { get;  set; } = null!;
+        public DateTime CreatedAt { get;  set; } = DateTime.UtcNow;
 
 
         //public Announcement(Course course, User professor, string title, string content)

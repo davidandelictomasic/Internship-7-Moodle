@@ -6,15 +6,15 @@ namespace MoodleApplication.Domain.Entities.Chats
    
         public class ChatRoom
         {
-            public int Id { get; private set; }
+            public int Id { get;  set; }
 
-            public int FirstUserId { get; private set; }
-            public User FirstUser { get; private set; } = null!;
+            public int FirstUserId { get;  set; }
+            public User FirstUser { get;  set; } = null!;
 
-            public int SecondUserId { get; private set; }
-            public User SecondUser { get; private set; } = null!;
+            public int SecondUserId { get;  set; }
+            public User SecondUser { get;  set; } = null!;
 
-            public ICollection<Message> Messages { get; private set; } = [];
+            public ICollection<Message> Messages { get;  set; } = [];
 
 
             //public ChatRoom(User firstUser, User secondUser)
