@@ -12,13 +12,13 @@ namespace MoodleApplication.Domain.Entities.Users
     {
         public int Id { get; private set; }
 
-        public string Email { get; private set; } = null!;
-        public string PasswordHash { get; private set; } = null!;
+        public string Email { get;  set; } = null!;
+        public string PasswordHash { get;  set; } = null!;
 
-        public string? Name { get; private set; }
-        public DateOnly? DateOfBirth { get; private set; }
+        public string? Name { get;  set; }
+        public DateOnly? DateOfBirth { get;  set; }
 
-        public UserRole Role { get; private set; }
+        public UserRole Role { get;  set; }
 
 
         public ICollection<CourseStudent> Enrollments { get; private set; } = [];
@@ -33,12 +33,12 @@ namespace MoodleApplication.Domain.Entities.Users
 
 
 
-        public User(string email, string passwordHash)
-        {
-            Email = email;
-            PasswordHash = passwordHash;
-            Role = UserRole.Student;
-        }
+        //public User(string email, string passwordHash)
+        //{
+        //    Email = email;
+        //    PasswordHash = passwordHash;
+        //    Role = UserRole.Student;
+        //}
 
 
 

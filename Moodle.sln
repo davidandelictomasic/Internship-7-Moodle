@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodleApplication.Applicati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodleApplication.Infrastructure", "MoodleApplication.Infrastructure\MoodleApplication.Infrastructure.csproj", "{96D6E610-A544-495F-B75B-BDAA62FDCCBD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodleApplication.Console", "MoodleApplication.Console\MoodleApplication.Console.csproj", "{6AB42225-DFA2-4A0B-8465-CF909AAC8A41}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{96D6E610-A544-495F-B75B-BDAA62FDCCBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96D6E610-A544-495F-B75B-BDAA62FDCCBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96D6E610-A544-495F-B75B-BDAA62FDCCBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AB42225-DFA2-4A0B-8465-CF909AAC8A41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AB42225-DFA2-4A0B-8465-CF909AAC8A41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AB42225-DFA2-4A0B-8465-CF909AAC8A41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AB42225-DFA2-4A0B-8465-CF909AAC8A41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

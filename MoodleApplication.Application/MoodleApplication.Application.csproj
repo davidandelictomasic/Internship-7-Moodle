@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Users\User\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\MoodleApplication.Domain\MoodleApplication.Domain.csproj" />
   </ItemGroup>
 
