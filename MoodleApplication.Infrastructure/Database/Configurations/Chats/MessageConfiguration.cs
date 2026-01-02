@@ -30,16 +30,6 @@ namespace MoodleApplication.Infrastructure.Database.Configurations.Chats
             builder.Property(m => m.SentAt)
                    .HasColumnName("sent_at")
                    .IsRequired();
-
-            builder.HasOne(m => m.ChatRoom)
-                   .WithMany(cr => cr.Messages)
-                   .HasForeignKey(m => m.ChatRoomId)
-                   .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasOne(m => m.Sender)
-                   .WithMany(u => u.SentMessages)
-                   .HasForeignKey(m => m.SenderId)
-                   .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

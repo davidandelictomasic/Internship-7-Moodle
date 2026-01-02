@@ -18,14 +18,26 @@ namespace MoodleApplication.Infrastructure.Persistence.Users
             _dbContext = dbContext;
         }
 
-        public Task ChangeRole(int userId, UserRole newRole)
+        public async Task ChangeRole(int userId, UserRole newRole)
         {
-            throw new NotImplementedException();
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if (user != null)
+            {
+                user.Role = newRole;
+                await _dbContext.SaveChangesAsync();
+            }
         }
 
-        public Task DeleteUser(int userId)
+        public async Task DeleteUser(int userId)
         {
-            throw new NotImplementedException();
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user != null)
+            {
+                
+                _dbContext.Users.Remove(user);
+                await _dbContext.SaveChangesAsync();
+            }
         }
 
         public async Task<IEnumerable<User>> GetAllUsers()
@@ -44,6 +56,13 @@ namespace MoodleApplication.Infrastructure.Persistence.Users
                 
         }
 
+        public async Task<IEnumerable<User>> GetUsersByRole(UserRole role)
+        {
+            return await _dbContext.Users
+                .Where(u => u.Role == role)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<CourseStudent>> GetStudentEnrollments(int studentId)
         {
             return await _dbContext.CourseStudents
@@ -57,9 +76,14 @@ namespace MoodleApplication.Infrastructure.Persistence.Users
             throw new NotImplementedException();
         }
 
-        public Task UpdateEmail(int userId, string newEmail)
+        public async Task UpdateEmail(int userId, string newEmail)
         {
-            throw new NotImplementedException();
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if (user != null)
+            {
+                user.Email = newEmail;
+                await _dbContext.SaveChangesAsync();
+            }
         }
     }
 }

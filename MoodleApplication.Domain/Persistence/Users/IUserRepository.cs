@@ -10,6 +10,7 @@ namespace MoodleApplication.Domain.Persistence.Users
         Task<User?> GetById(int id);
         Task<User?> GetByEmail(string email);
         Task<IEnumerable<User>> GetAllUsers();
+        Task<IEnumerable<User>> GetUsersByRole(UserRole role);
 
         
         Task UpdateEmail(int userId, string newEmail);

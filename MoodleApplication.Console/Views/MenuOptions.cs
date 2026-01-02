@@ -1,5 +1,7 @@
-﻿using MoodleApplication.Application.Users.Chats;
+﻿using MoodleApplication.Application.Users.Admin;
+using MoodleApplication.Application.Users.Chats;
 using MoodleApplication.Application.Users.User;
+using MoodleApplication.Domain.Enumumerations.Users;
 
 namespace MoodleApplication.Console.Views
 {
@@ -146,6 +148,88 @@ namespace MoodleApplication.Console.Views
                 {
                     await menuManager.ShowChatScreen(currentUserId, chatRoom.ChatRoomId, chatRoom.OtherUserId, chatRoom.OtherUserName ?? "Unknown");
                     return false;
+                });
+            }
+
+            menuOptions.AddOption("0", "Back", async () => true);
+
+            return menuOptions.Build();
+        }
+
+        public static Dictionary<string, (string Description, Func<Task<bool>> Action)> CreateAdminMenuOptions(MenuManager menuManager, int userId)
+        {
+            return new MenuOptions()
+                .AddOption("1", "Private chat", async () =>
+                {
+                    await menuManager.ShowPrivateChatMenu(userId);
+                    return false;
+                })
+                .AddOption("2", "Edit Users", async () =>
+                {
+                    await menuManager.ShowEditUsersMenu();
+                    return false;
+                })
+                .AddOption("3", "Log out", async () => true)
+                .Build();
+        }
+
+        public static Dictionary<string, (string Description, Func<Task<bool>> Action)> CreateEditUsersMenuOptions(MenuManager menuManager)
+        {
+            return new MenuOptions()
+                .AddOption("1", "Delete User", async () =>
+                {
+                    await menuManager.ShowDeleteUserRoleSelectMenu();
+                    return false;
+                })
+                .AddOption("2", "Edit User Email", async () =>
+                {
+                    await menuManager.ShowEditEmailRoleSelectMenu();
+                    return false;
+                })
+                .AddOption("3", "Change Role", async () =>
+                {
+                    await menuManager.ShowChangeRoleSelectMenu();
+                    return false;
+                })
+                .AddOption("0", "Back", async () => true)
+                .Build();
+        }
+
+        public static Dictionary<string, (string Description, Func<Task<bool>> Action)> CreateRoleSelectMenuOptions(MenuManager menuManager, string action)
+        {
+            return new MenuOptions()
+                .AddOption("1", "Student List", async () =>
+                {
+                    await menuManager.ShowUserListForAction(UserRole.Student, action);
+                    return false;
+                })
+                .AddOption("2", "Professor List", async () =>
+                {
+                    await menuManager.ShowUserListForAction(UserRole.Professor, action);
+                    return false;
+                })
+                .AddOption("0", "Back", async () => true)
+                .Build();
+        }
+
+        public static Dictionary<string, (string Description, Func<Task<bool>> Action)> CreateUserListForActionMenuOptions(
+            MenuManager menuManager, 
+            IEnumerable<UserListResponse> users, 
+            string action,
+            UserRole currentRole)
+        {
+            var menuOptions = new MenuOptions();
+            var usersList = users.ToList();
+
+            for (int i = 0; i < usersList.Count; i++)
+            {
+                var user = usersList[i];
+                var displayNumber = (i + 1).ToString();
+
+                menuOptions.AddOption(displayNumber, $"{user.Name} ({user.Email})", async () =>
+                {
+                    await menuManager.ExecuteUserAction(user.UserId, user.Name ?? "Unknown", user.Email ?? "", action, currentRole);
+                    return true; // Return to previous menu after action
                 });
             }
 

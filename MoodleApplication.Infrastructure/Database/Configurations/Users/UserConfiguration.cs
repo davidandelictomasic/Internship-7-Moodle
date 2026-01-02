@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using MoodleApplication.Domain.Entities.Chats;
 using MoodleApplication.Domain.Entities.Users;
 
 namespace MoodleApplication.Infrastructure.Database.Configurations.Users
@@ -35,6 +36,26 @@ namespace MoodleApplication.Infrastructure.Database.Configurations.Users
 
             builder.HasIndex(u => u.Email)
                    .IsUnique();
+
+            builder.HasMany(u => u.SentMessages)
+                   .WithOne(m => m.Sender)
+                   .HasForeignKey(m => m.SenderId)
+                   .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany<ChatRoom>()
+                   .WithOne(cr => cr.FirstUser)
+                   .HasForeignKey(cr => cr.FirstUserId)
+                   .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany<ChatRoom>()
+                   .WithOne(cr => cr.SecondUser)
+                   .HasForeignKey(cr => cr.SecondUserId)
+                   .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(u => u.Enrollments)
+                   .WithOne(cs => cs.Student)
+                   .HasForeignKey(cs => cs.UserId)
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
