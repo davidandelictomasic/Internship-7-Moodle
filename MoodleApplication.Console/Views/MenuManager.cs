@@ -348,25 +348,41 @@ namespace MoodleApplication.Console.Views
 
         public async Task ShowChatScreen(int currentUserId, int chatRoomId, int otherUserId, string otherUserName)
         {
-            System.Console.Clear();
-            Writer.WriteMessage($"=== CHAT WITH: {otherUserName} ===\n");
+            bool exitChat = false;
 
-            var messages = await _chatActions.GetChatMessages(chatRoomId);
+            while (!exitChat)
+            {
+                System.Console.Clear();
+                Writer.WriteMessage($"=== CHAT WITH: {otherUserName} ===");
+                Writer.WriteMessage("(Type /exit to go back)\n");
 
-            if (!messages.Any())
-            {
-                Writer.WriteMessage("No messages in this chat.\n");
-            }
-            else
-            {
-                foreach (var message in messages)
+                var messages = await _chatActions.GetChatMessages(chatRoomId);
+
+                if (!messages.Any())
                 {
-                    var senderLabel = message.SenderId == currentUserId ? "You" : message.SenderName;
-                    Writer.WriteMessage($"[{message.SentAt:dd.MM.yyyy HH:mm}] {senderLabel}: {message.Content}");
+                    Writer.WriteMessage("No messages in this chat.\n");
+                }
+                else
+                {
+                    foreach (var message in messages)
+                    {
+                        var senderLabel = message.SenderId == currentUserId ? "You" : message.SenderName;
+                        Writer.WriteMessage($"[{message.SentAt:dd.MM.yyyy HH:mm}] {senderLabel}: {message.Content}");
+                    }
+                }
+
+                Writer.WriteMessage("");
+                var messageContent = Reader.ReadString("Input message: ");
+
+                if (messageContent.Equals("/exit", StringComparison.OrdinalIgnoreCase))
+                {
+                    exitChat = true;
+                }
+                else
+                {
+                    await _chatActions.SendMessage(currentUserId, otherUserId, messageContent);
                 }
             }
-
-            Writer.WaitForKey();
             System.Console.Clear();
         }
     }
