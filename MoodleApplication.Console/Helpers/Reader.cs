@@ -37,12 +37,7 @@ namespace MoodleApplication.Console.Helpers
                 }
 
 
-                if (input.Any(char.IsDigit))
-                {
-                    System.Console.WriteLine("Ime ne smije sadržavati brojeve. Pokušajte ponovo.");
-
-                    continue;
-                }
+               
 
 
                 return input;
@@ -77,6 +72,22 @@ namespace MoodleApplication.Console.Helpers
                 }
 
                 return input;
+            }
+        }
+        public static bool ValidateCaptcha(string captcha)
+        {
+            while (true)
+            {
+                System.Console.Write("Unesite CAPTCHA kod: ");
+                var input = System.Console.ReadLine()?.Trim();
+
+                if (string.Equals(input, captcha, StringComparison.Ordinal))
+                {
+                    System.Console.WriteLine("CAPTCHA uspješno potvrđena!");
+                    return true;
+                }
+
+                System.Console.WriteLine("Neispravan CAPTCHA. Pokušajte ponovo.");
             }
         }
     }

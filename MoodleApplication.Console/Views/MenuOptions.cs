@@ -19,5 +19,26 @@
         {
             return _options;
         }
+
+        public static Dictionary<string, (string Description, Func<Task<bool>> Action)> CreateStartMenuOptions(MenuManager menuManager)
+        {
+                       var menuOptions = new MenuOptions()
+                .AddOption("1", "Login", async () =>
+                {
+                    MenuManager.HandleUserLogin();
+                    return false;
+                })
+                .AddOption("2", "Register", async () =>
+                {
+                    MenuManager.HandleUserRegister();
+                    return false;
+                })
+                .AddOption("0", "Exit", async () =>
+                {
+                    return true;
+                });
+            return menuOptions.Build();
+
+        }
     }
 }
