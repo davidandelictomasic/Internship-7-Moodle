@@ -23,7 +23,7 @@ namespace MoodleApplication.Domain.Common.Validation.ValidationItems
             Code = $"{CodePrefix}_003",
             Message = $"Email needs to be unique."
         };
-        
-       
+
+
     }
 }

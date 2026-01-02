@@ -40,5 +40,18 @@
             return menuOptions.Build();
 
         }
+        public static Dictionary<string, (string Description, Func<Task<bool>> Action)> CreateStudentMenuOptions(MenuManager menuManager)
+        {
+            return new MenuOptions()
+                .AddOption("1", "Privatni chat", async () =>
+                {
+                   
+                    System.Console.Clear();
+                    return false;
+                })
+                .AddOption("2", "Moji kolegiji", async () => false)
+                .AddOption("3", "Log out", async () => true)
+                .Build();
+        }
     }
 }

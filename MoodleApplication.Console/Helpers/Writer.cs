@@ -22,7 +22,7 @@ namespace MoodleApplication.Console.Helpers
 
         public static void DisplayMenu(string title, Dictionary<string, (string Description, Func<Task<bool>> Action)> options)
         {
-            System.Console.WriteLine($"\n=== {title} ===");
+            System.Console.WriteLine($"=== {title} ===");
 
             foreach (var option in options)
             {

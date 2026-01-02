@@ -33,9 +33,9 @@ namespace MoodleApplication.Infrastructure.Persistence.Users
             throw new NotImplementedException();
         }
 
-        public Task<User?> GetByEmail(string email)
+        public async Task<User?> GetByEmail(string email)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
         public async Task<User?> GetById(int id)

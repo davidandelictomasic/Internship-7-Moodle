@@ -14,6 +14,8 @@ builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddScoped<CreateUserRequestHandler>();
+builder.Services.AddScoped<GetUserRequestHandler>();
+
 builder.Services.AddScoped<MenuManager>();
 builder.Services.AddScoped<UserActions>();
 

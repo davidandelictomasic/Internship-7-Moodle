@@ -40,8 +40,37 @@ namespace MoodleApplication.Console.Views
                     Writer.WriteMessage("Invalid option. Please try again.");
                 }
             }
+            System.Console.Clear();
 
-            
+
+
+        }
+        public async Task ShowStudentMenu()
+        {
+            System.Console.Clear();
+
+            bool exitRequested = false;
+
+            var studentMenuOptions = MenuOptions.CreateStudentMenuOptions(this);
+            while (!exitRequested)
+            {
+                Writer.DisplayMenu("Moodle - STUDENT MENU", studentMenuOptions);
+                var choice = Reader.ReadMenuChoice();
+
+                if (studentMenuOptions.ContainsKey(choice))
+                {
+                    exitRequested = await studentMenuOptions[choice].Action();
+                }
+                else
+                {
+                    System.Console.Clear();
+                    Writer.WriteMessage("Invalid option. Please try again.");
+                }
+            }
+            System.Console.Clear();
+
+
+
         }
         public async Task HandleUserLogin()
         {
@@ -50,6 +79,21 @@ namespace MoodleApplication.Console.Views
 
             var userEmail = Reader.ReadEmail("Email: ");
             var userPassword = Reader.ReadString("Password: ");
+            var loginReult = await _userActions.LoginUser(userEmail, userPassword);
+            if(loginReult.IsSuccess)
+            {
+                Writer.WriteMessage("Login successful.");
+                Writer.WaitForKey();
+                if (loginReult.Role == "Student")
+                {
+                    await ShowStudentMenu();
+                }
+            }
+            else
+            {
+                Writer.WriteMessage("Login failed. Please check your credentials.");
+                Writer.WaitForKey();
+            }
         }
         public async Task HandleUserRegister()
         {
@@ -68,7 +112,16 @@ namespace MoodleApplication.Console.Views
 
             Writer.WriteMessage($"CAPTCHA: {captcha}");
             Reader.ValidateCaptcha(captcha);
-            await _userActions.RegisterUser(userName, userDob, userEmail, userPassword);
+           if (await _userActions.RegisterUser(userName, userDob, userEmail, userPassword))
+           {
+               Writer.WriteMessage("User registered successfully.");    
+                Writer.WaitForKey();
+
+            }
+           else
+           {
+               Writer.WriteMessage("User registration failed.");
+           }
         }
 
     }
