@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MoodleApplication.Application.Users.User;
+using MoodleApplication.Console.Actions;
 using MoodleApplication.Console.Views;
 using MoodleApplication.Infrastructure.Database;
 
@@ -14,6 +15,8 @@ builder.Configuration
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddScoped<CreateUserRequestHandler>();
 builder.Services.AddScoped<MenuManager>();
+builder.Services.AddScoped<UserActions>();
+
 
 
 var host = builder.Build();

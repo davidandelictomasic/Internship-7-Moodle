@@ -25,12 +25,12 @@
                        var menuOptions = new MenuOptions()
                 .AddOption("1", "Login", async () =>
                 {
-                    MenuManager.HandleUserLogin();
+                    await menuManager.HandleUserLogin();
                     return false;
                 })
                 .AddOption("2", "Register", async () =>
                 {
-                    MenuManager.HandleUserRegister();
+                    await menuManager.HandleUserRegister();
                     return false;
                 })
                 .AddOption("0", "Exit", async () =>

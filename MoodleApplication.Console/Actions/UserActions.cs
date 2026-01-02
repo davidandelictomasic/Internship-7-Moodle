@@ -14,7 +14,7 @@ namespace MoodleApplication.Console.Actions
         {
             _createUserRequestHandler = createUserRequestHandler;
         }
-        public async Task<bool> RegisterUser(string name,string email,string password,DateOnly dateofbirth) {
+        public async Task<bool> RegisterUser(string name, DateOnly dateofbirth,string email,string password) {
             var createUserRequest = new CreateUserRequest
             {
                 Name = name,

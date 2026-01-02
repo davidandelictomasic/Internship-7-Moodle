@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MoodleApplication.Console.Actions;
 using MoodleApplication.Console.Helpers;
 using Npgsql.Internal;
 
@@ -10,6 +11,13 @@ namespace MoodleApplication.Console.Views
 {
     public class MenuManager
     {
+        private readonly UserActions _userActions;
+
+        public MenuManager(UserActions userActions)
+        {
+            _userActions = userActions;
+        }
+
         public async Task RunAsync()
         {
             System.Console.Clear();
@@ -35,7 +43,7 @@ namespace MoodleApplication.Console.Views
 
             
         }
-        public static void HandleUserLogin()
+        public async Task HandleUserLogin()
         {
             System.Console.Clear();
             Writer.WriteMessage("=== USER LOGIN ===");
@@ -43,10 +51,14 @@ namespace MoodleApplication.Console.Views
             var userEmail = Reader.ReadEmail("Email: ");
             var userPassword = Reader.ReadString("Password: ");
         }
-        public static void HandleUserRegister()
+        public async Task HandleUserRegister()
         {
             System.Console.Clear();
             Writer.WriteMessage("=== USER REGISTRATION ===");
+
+            var userName = Reader.ReadString("Full Name: ");
+
+            var userDob = Reader.ReadDateOfBirth("Date of Birth (YYYY-MM-DD): ");
 
             var userEmail = Reader.ReadEmail("Email: ");
 
@@ -56,6 +68,7 @@ namespace MoodleApplication.Console.Views
 
             Writer.WriteMessage($"CAPTCHA: {captcha}");
             Reader.ValidateCaptcha(captcha);
+            await _userActions.RegisterUser(userName, userDob, userEmail, userPassword);
         }
 
     }
