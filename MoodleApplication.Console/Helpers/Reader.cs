@@ -34,10 +34,7 @@ namespace MoodleApplication.Console.Helpers
                     System.Console.WriteLine("Polje ne smije biti prazno. Pokušajte ponovo.");
 
                     continue;
-                }
-
-
-               
+                }             
 
 
                 return input;
@@ -72,6 +69,29 @@ namespace MoodleApplication.Console.Helpers
                 }
 
                 return input;
+            }
+        }
+        public static DateOnly ReadDateOfBirth(string prompt)
+        {
+            DateOnly result;
+            while (true)
+            {
+                System.Console.Write(prompt);
+                string input = System.Console.ReadLine()?.Trim();
+
+                if (!DateOnly.TryParse(input, out result))
+                {
+                    System.Console.WriteLine("Neispravan format datuma/vremena. Pokušajte ponovo (npr. 19.11.2025 14:30).");
+                    continue;
+                }
+
+                if (result > DateOnly.FromDateTime(DateTime.Now))
+                {
+                    System.Console.WriteLine("Datum ne može biti u budućnosti. Pokušajte ponovo.");
+                    continue;
+                }
+
+                return result;
             }
         }
         public static bool ValidateCaptcha(string captcha)
