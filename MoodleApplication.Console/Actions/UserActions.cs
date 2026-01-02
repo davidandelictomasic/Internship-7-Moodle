@@ -11,12 +11,24 @@ namespace MoodleApplication.Console.Actions
     {
         private readonly CreateUserRequestHandler _createUserRequestHandler;
         private readonly GetUserRequestHandler _getUserRequestHandler;
-        private readonly GetUserCoursesRequestHandler _getUserCoursesRequestHandler;
-        public UserActions(CreateUserRequestHandler createUserRequestHandler, GetUserRequestHandler getUserRequestHandler, GetUserCoursesRequestHandler getUserCoursesRequestHandler)
+        private readonly GetUserCoursesRequestHandler _getUserCoursesRequestHandler;      
+        private readonly GetAllUsersRequestHandler _getAllUsersRequestHandler;
+        public UserActions(CreateUserRequestHandler createUserRequestHandler, GetUserRequestHandler getUserRequestHandler, GetUserCoursesRequestHandler getUserCoursesRequestHandler, GetAllUsersRequestHandler getAllUsersRequestHandler)
         {
             _createUserRequestHandler = createUserRequestHandler;
             _getUserRequestHandler = getUserRequestHandler;
             _getUserCoursesRequestHandler = getUserCoursesRequestHandler;
+            _getAllUsersRequestHandler = getAllUsersRequestHandler;
+        }
+        public async Task<IEnumerable<UserResponse>> GetAllUsers(int currentUserId)
+        {
+            var request = new GetAllUsersRequest { CurrentUserId = currentUserId };
+            var result = await _getAllUsersRequestHandler.ProcessActiveRequestAsnync(request);
+
+            if (result.Value == null)
+                return [];
+
+            return result.Value.Values;
         }
         public async Task<bool> RegisterUser(string name, DateOnly dateofbirth,string email,string password) {
             var createUserRequest = new CreateUserRequest

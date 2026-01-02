@@ -28,9 +28,9 @@ namespace MoodleApplication.Infrastructure.Persistence.Users
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<User>> GetAllUsers()
+        public async Task<IEnumerable<User>> GetAllUsers()
         {
-            throw new NotImplementedException();
+            return await _dbContext.Users.ToListAsync();
         }
 
         public async Task<User?> GetByEmail(string email)

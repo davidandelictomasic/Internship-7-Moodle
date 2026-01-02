@@ -1,4 +1,5 @@
-﻿using MoodleApplication.Application.Users.User;
+﻿using MoodleApplication.Application.Users.Chats;
+using MoodleApplication.Application.Users.User;
 
 namespace MoodleApplication.Console.Views
 {
@@ -47,8 +48,7 @@ namespace MoodleApplication.Console.Views
             return new MenuOptions()
                 .AddOption("1", "Private chat", async () =>
                 {
-                   
-                    System.Console.Clear();
+                    await menuManager.ShowPrivateChatMenu(userId);
                     return false;
                 })
                 .AddOption("2", "My courses", async () => { 
@@ -93,6 +93,65 @@ namespace MoodleApplication.Console.Views
                 })
                 .AddOption("3", "Back", async () => true)
                 .Build();
+        }
+        public static Dictionary<string, (string Description, Func<Task<bool>> Action)> CreatePrivateChatMenuOptions(MenuManager menuManager, int userId)
+        {
+            return new MenuOptions()
+                .AddOption("1", "New message", async () =>
+                {
+                    await menuManager.ShowNewMessageMenu(userId);
+                    return false;
+                })
+                .AddOption("2", "My chats", async () =>
+                {
+                    await menuManager.ShowMyChatRoomsMenu(userId);
+                    return false;
+                })
+                .AddOption("3", "Back", async () => true)
+                .Build();
+        }
+        public static Dictionary<string, (string Description, Func<Task<bool>> Action)> CreateUsersListMenuOptions(MenuManager menuManager, int currentUserId, IEnumerable<UserResponse> users)
+        {
+            var menuOptions = new MenuOptions();
+            var usersList = users.ToList();
+
+            for (int i = 0; i < usersList.Count; i++)
+            {
+                var user = usersList[i];
+                var displayNumber = (i + 1).ToString();
+
+                menuOptions.AddOption(displayNumber, $"{user.Name} ({user.Email})", async () =>
+                {
+                    await menuManager.ShowSendMessageScreen(currentUserId, user.UserId, user.Name ?? "Unknown");
+                    return false;
+                });
+            }
+
+            menuOptions.AddOption("0", "Back", async () => true);
+
+            return menuOptions.Build();
+        }
+
+        public static Dictionary<string, (string Description, Func<Task<bool>> Action)> CreateChatRoomsMenuOptions(MenuManager menuManager, int currentUserId, IEnumerable<ChatRoomResponse> chatRooms)
+        {
+            var menuOptions = new MenuOptions();
+            var chatRoomsList = chatRooms.ToList();
+
+            for (int i = 0; i < chatRoomsList.Count; i++)
+            {
+                var chatRoom = chatRoomsList[i];
+                var displayNumber = (i + 1).ToString();
+
+                menuOptions.AddOption(displayNumber, chatRoom.OtherUserName ?? "Unknown User", async () =>
+                {
+                    await menuManager.ShowChatScreen(currentUserId, chatRoom.ChatRoomId, chatRoom.OtherUserId, chatRoom.OtherUserName ?? "Unknown");
+                    return false;
+                });
+            }
+
+            menuOptions.AddOption("0", "Back", async () => true);
+
+            return menuOptions.Build();
         }
     }
 }

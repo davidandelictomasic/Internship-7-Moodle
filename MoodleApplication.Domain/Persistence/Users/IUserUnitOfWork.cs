@@ -8,7 +8,6 @@ namespace MoodleApplication.Domain.Persistence.Users
     {
         IUserRepository UserRepository { get; }
         ICourseRepository CourseRepository { get; }
-
-
+        IChatRoomRepository ChatRoomRepository { get; }
     }
 }

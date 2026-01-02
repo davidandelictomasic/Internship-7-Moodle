@@ -1,4 +1,5 @@
-﻿using MoodleApplication.Domain.Entities.Chats;
+﻿using Microsoft.EntityFrameworkCore;
+using MoodleApplication.Domain.Entities.Chats;
 using MoodleApplication.Domain.Persistence.Chats;
 using MoodleApplication.Infrastructure.Database;
 using MoodleApplication.Infrastructure.Persistence.Common;
@@ -15,29 +16,55 @@ namespace MoodleApplication.Infrastructure.Persistence.Chats
             _dbContext = dbContext;
         }
 
-        public Task<ChatRoom> CreateChatRoom(int firstUserId, int secondUserId)
+        public async Task<ChatRoom> CreateChatRoom(int firstUserId, int secondUserId)
         {
-            throw new NotImplementedException();
+            var chatRoom = new ChatRoom
+            {
+                FirstUserId = firstUserId,
+                SecondUserId = secondUserId
+            };
+
+            await _dbContext.ChatRooms.AddAsync(chatRoom);
+            await _dbContext.SaveChangesAsync();
+
+            return chatRoom;
         }
 
-        public Task<ChatRoom?> GetChatRoomBetweenUsers(int firstUserId, int secondUserId)
+        public async Task<ChatRoom?> GetChatRoomBetweenUsers(int firstUserId, int secondUserId)
         {
-            throw new NotImplementedException();
+            return await _dbContext.ChatRooms
+                .Include(c => c.FirstUser)
+                .Include(c => c.SecondUser)
+                .FirstOrDefaultAsync(c =>
+                    (c.FirstUserId == firstUserId && c.SecondUserId == secondUserId) ||
+                    (c.FirstUserId == secondUserId && c.SecondUserId == firstUserId));
         }
 
-        public Task<IEnumerable<Message>> GetMessagesForChatRoom(int chatRoomId)
+        public async Task<IEnumerable<Message>> GetMessagesForChatRoom(int chatRoomId)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Messages
+                .Include(m => m.Sender)
+                .Where(m => m.ChatRoomId == chatRoomId)
+                .OrderBy(m => m.SentAt)
+                .ToListAsync();
         }
 
-        public Task<IEnumerable<ChatRoom>> GetUserChatRooms(int userId)
+        public async Task<IEnumerable<ChatRoom>> GetUserChatRooms(int userId)
         {
-            throw new NotImplementedException();
+            return await _dbContext.ChatRooms
+                .Include(c => c.FirstUser)
+                .Include(c => c.SecondUser)
+                .Where(c => c.FirstUserId == userId || c.SecondUserId == userId)
+                .ToListAsync();
         }
 
-        public Task<Message> SendMessage(int chatRoomId, Message message)
+        public async Task<Message> SendMessage(int chatRoomId, Message message)
         {
-            throw new NotImplementedException();
+            message.ChatRoomId = chatRoomId;
+            await _dbContext.Messages.AddAsync(message);
+            await _dbContext.SaveChangesAsync();
+
+            return message;
         }
     }
 }
