@@ -44,9 +44,12 @@ namespace MoodleApplication.Infrastructure.Persistence.Users
                 
         }
 
-        public Task<IEnumerable<CourseStudent>> GetStudentEnrollments(int studentId)
+        public async Task<IEnumerable<CourseStudent>> GetStudentEnrollments(int studentId)
         {
-            throw new NotImplementedException();
+            return await _dbContext.CourseStudents
+                .Where(cs => cs.UserId == studentId)
+                .Include(cs => cs.Course)
+                .ToListAsync();
         }
 
         public Task<IEnumerable<Course>> GetTeachingCourses(int professorId)

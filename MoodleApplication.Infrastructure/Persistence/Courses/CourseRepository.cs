@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using MoodleApplication.Domain.Entities.Courses;
 using MoodleApplication.Domain.Entities.Users;
 using MoodleApplication.Domain.Persistence.Courses;
@@ -46,14 +47,21 @@ namespace MoodleApplication.Infrastructure.Persistence.Chats
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Announcement>> GetCourseAnnouncements(int courseId)
+        public async Task<IEnumerable<Announcement>> GetCourseAnnouncements(int courseId)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Announcements
+                 .Where(a => a.CourseId == courseId)
+                 .Include(a => a.Professor)
+                 .OrderBy(a => a.CreatedAt)
+                 .ToListAsync();
+
         }
 
-        public Task<IEnumerable<Material>> GetCourseMaterials(int courseId)
+        public async Task<IEnumerable<Material>> GetCourseMaterials(int courseId)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Materials
+                 .Where(a => a.CourseId == courseId)
+                 .ToListAsync();
         }
 
         public Task<IEnumerable<User>> GetStudentsForCourse(int courseId)

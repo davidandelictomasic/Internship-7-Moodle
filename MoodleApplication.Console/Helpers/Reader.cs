@@ -49,7 +49,8 @@ namespace MoodleApplication.Console.Helpers
         public static string ReadEmail(string prompt)
         {
             string input;
-            Regex emailRegex = new(@"^[^@\s]{1,}@[^@\s\.]{2,}\.[^@\s\.]{3,}$");
+            Regex emailRegex = new(@"^[^@\s]{1,}@[^@\s\.]{2,}(\.[^@\s\.]{2,})*\.[^@\s\.]{3,}$");
+
 
             while (true)
             {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MoodleApplication.Application.Users.Courses;
 using MoodleApplication.Application.Users.User;
 using MoodleApplication.Console.Actions;
 using MoodleApplication.Console.Views;
@@ -15,9 +16,13 @@ builder.Configuration
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddScoped<CreateUserRequestHandler>();
 builder.Services.AddScoped<GetUserRequestHandler>();
+builder.Services.AddScoped<GetUserCoursesRequestHandler>();
+builder.Services.AddScoped<GetCourseMaterialsRequestHandler>();
+builder.Services.AddScoped<GetCourseAnnouncementsRequestHandler>();
 
 builder.Services.AddScoped<MenuManager>();
 builder.Services.AddScoped<UserActions>();
+builder.Services.AddScoped<CourseActions>();
 
 
 

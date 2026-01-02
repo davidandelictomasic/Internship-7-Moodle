@@ -11,10 +11,12 @@ namespace MoodleApplication.Console.Actions
     {
         private readonly CreateUserRequestHandler _createUserRequestHandler;
         private readonly GetUserRequestHandler _getUserRequestHandler;
-        public UserActions(CreateUserRequestHandler createUserRequestHandler, GetUserRequestHandler getUserRequestHandler)
+        private readonly GetUserCoursesRequestHandler _getUserCoursesRequestHandler;
+        public UserActions(CreateUserRequestHandler createUserRequestHandler, GetUserRequestHandler getUserRequestHandler, GetUserCoursesRequestHandler getUserCoursesRequestHandler)
         {
             _createUserRequestHandler = createUserRequestHandler;
             _getUserRequestHandler = getUserRequestHandler;
+            _getUserCoursesRequestHandler = getUserCoursesRequestHandler;
         }
         public async Task<bool> RegisterUser(string name, DateOnly dateofbirth,string email,string password) {
             var createUserRequest = new CreateUserRequest
@@ -41,6 +43,24 @@ namespace MoodleApplication.Console.Actions
                 return (false, 0, string.Empty);
             }
             return (true, result.Value.UserId, result.Value.Role.ToString());
+        }
+        public async Task<IEnumerable<CoursesResponse>> GetUserCourses(int userId)
+        {
+            var getUserCoursesRequest = new GetUserCoursesRequest
+            {
+                Id = userId
+            };
+            var result = await _getUserCoursesRequestHandler.ProcessActiveRequestAsnync(getUserCoursesRequest);
+
+            if (result.Value == null)
+                return [];
+
+            return result.Value.Values.Select(b => new CoursesResponse
+            {
+                CourseId = b.CourseId,
+                CourseName = b.CourseName
+            });
+                
         }
     }
 }
