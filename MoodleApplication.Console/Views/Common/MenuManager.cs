@@ -107,7 +107,13 @@ namespace MoodleApplication.Console.Views.Common
             var userDob = Reader.ReadDateOfBirth("Date of Birth (YYYY-MM-DD): ");
             var userEmail = Reader.ReadEmail("Email: ");
             var userPassword = Reader.ReadString("Password: ");
-
+            var confirmPassword = Reader.ReadString("Confirm Password: ");
+            if (userPassword != confirmPassword)
+            {
+                Writer.WriteMessage("Error: Passwords do not match.");
+                Writer.WaitForKey();
+                return;
+            }
             var captcha = Writer.GenerateCaptcha();
             Writer.WriteMessage($"CAPTCHA: {captcha}");
             Reader.ValidateCaptcha(captcha);
