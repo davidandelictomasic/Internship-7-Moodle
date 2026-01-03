@@ -29,6 +29,8 @@ namespace MoodleApplication.Console.Views.Users
             var studentMenuOptions = MenuOptions.CreateStudentMenuOptions(this, userId);
             while (!exitRequested)
             {
+                System.Console.Clear();
+
                 Writer.DisplayMenu("Moodle - STUDENT MENU", studentMenuOptions);
                 var choice = Reader.ReadMenuChoice();
 
@@ -121,13 +123,14 @@ namespace MoodleApplication.Console.Views.Users
 
         public async Task ShowProfessorMenu(int userId)
         {
-            System.Console.Clear();
 
             bool exitRequested = false;
 
             var professorMenuOptions = MenuOptions.CreateProfessorMenuOptions(this, userId);
             while (!exitRequested)
             {
+                System.Console.Clear();
+
                 Writer.DisplayMenu("Moodle - PROFESSOR MENU", professorMenuOptions);
                 var choice = Reader.ReadMenuChoice();
 
@@ -154,6 +157,7 @@ namespace MoodleApplication.Console.Views.Users
             {
                 Writer.WriteMessage("No courses found.");
                 Writer.WaitForKey();
+                System.Console.Clear();
                 return;
             }
 

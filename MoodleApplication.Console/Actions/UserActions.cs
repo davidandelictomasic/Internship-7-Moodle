@@ -40,7 +40,7 @@ namespace MoodleApplication.Console.Actions
             return result.Value.Values;
         }
 
-        public async Task<bool> RegisterUser(string name, DateOnly dateofbirth, string email, string password)
+        public async Task<int?> RegisterUser(string name, DateOnly dateofbirth, string email, string password)
         {
             var createUserRequest = new CreateUserRequest
             {
@@ -49,8 +49,8 @@ namespace MoodleApplication.Console.Actions
                 PasswordHash = password,
                 DateOfBirth = dateofbirth
             };
-            var result = await _createUserRequestHandler.ProcessActiveRequestAsnync(createUserRequest);
-            return result.HasError;
+            var result = await _createUserRequestHandler.ProcessActiveRequestAsnync(createUserRequest);            
+            return result.Value.Id;
         }
 
         public async Task<(bool IsSuccess, int UserId, string Role)> LoginUser(string email, string password)

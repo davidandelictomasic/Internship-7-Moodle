@@ -33,7 +33,7 @@ namespace MoodleApplication.Application.Users.User
             if (result.HasError)
                 return result;
 
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.SaveAsync();            
             result.SetResult(new SuccessPostResponse(user.Id));
             return result;
         }

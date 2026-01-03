@@ -110,12 +110,13 @@ namespace MoodleApplication.Console.Views.Common
             var captcha = Writer.GenerateCaptcha();
             Writer.WriteMessage($"CAPTCHA: {captcha}");
             Reader.ValidateCaptcha(captcha);
-            var result = await _userActions.RegisterUser(userName, userDob, userEmail, userPassword);
-            if (result)
+            int? resultId = await _userActions.RegisterUser(userName, userDob, userEmail, userPassword);
+            if (resultId != null)
             {
                 Writer.WriteMessage("User registered successfully.");
                 Writer.WaitForKey();
-                
+                await UserMenu.ShowStudentMenu(resultId.Value);
+
             }
             else
             {

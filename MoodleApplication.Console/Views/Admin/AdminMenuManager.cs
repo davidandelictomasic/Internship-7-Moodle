@@ -107,6 +107,7 @@ namespace MoodleApplication.Console.Views.Admin
                 {
                     System.Console.Clear();
                     Writer.WriteMessage("Invalid option. Please try again.");
+                    
                 }
             }
             System.Console.Clear();

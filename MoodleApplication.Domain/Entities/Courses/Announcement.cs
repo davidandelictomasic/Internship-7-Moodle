@@ -17,16 +17,5 @@ namespace MoodleApplication.Domain.Entities.Courses
         public string Content { get;  set; } = null!;
         public DateTime CreatedAt { get;  set; } = DateTime.UtcNow;
 
-
-        //public Announcement(Course course, User professor, string title, string content)
-        //{
-        //    Course = course;
-        //    CourseId = course.Id;
-        //    Professor = professor;
-        //    ProfessorId = professor.Id;
-        //    Title = title;
-        //    Content = content;
-        //    CreatedAt = DateTime.UtcNow;
-        //}
     }
 }

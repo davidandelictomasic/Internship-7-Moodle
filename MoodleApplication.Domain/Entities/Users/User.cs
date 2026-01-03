@@ -31,17 +31,6 @@ namespace MoodleApplication.Domain.Entities.Users
         public const int EmailMaxLength = 100;
         public const int PasswordHashMaxLength = 256;
 
-
-
-        //public User(string email, string passwordHash)
-        //{
-        //    Email = email;
-        //    PasswordHash = passwordHash;
-        //    Role = UserRole.Student;
-        //}
-
-
-
         public async Task<Result<bool>> Create(IUserRepository userRepository)
         {
             var validationResult = await CreateOrUpdateValidation(userRepository);
