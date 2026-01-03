@@ -17,7 +17,11 @@ namespace MoodleApplication.Console.Views
         private readonly ChatActions _chatActions;
         private readonly AdminActions _adminActions;
 
-        public MenuManager(UserActions userActions, CourseActions courseActions, ChatActions chatActions, AdminActions adminActions)
+        public MenuManager(
+            UserActions userActions, 
+            CourseActions courseActions, 
+            ChatActions chatActions, 
+            AdminActions adminActions)
         {
             _userActions = userActions;
             _courseActions = courseActions;
@@ -101,7 +105,7 @@ namespace MoodleApplication.Console.Views
                 }
                 else if (loginReult.Role == "Professor")
                 {
-                    await ShowStudentMenu(loginReult.UserId);
+                    await ShowProfessorMenu(loginReult.UserId);
                 }
             }
             else
@@ -195,52 +199,7 @@ namespace MoodleApplication.Console.Views
                 }
             }
             System.Console.Clear();
-        }
-        public async Task ShowCourseMaterials(int courseId)
-        {
-            System.Console.Clear();
-
-            var courseMaterials = await _courseActions.GetCourseMaterials(courseId);
-
-            if (!courseMaterials.Any())
-            {
-                Writer.WriteMessage("No materials found.");
-                Writer.WaitForKey();
-                return;
-            }
-            Writer.WriteMessage("=== COURSE MATERIALS ===\n");
-
-            foreach (var material in courseMaterials)
-            {
-                Writer.WriteMessage($"Added at: {material.MaterialAddedAt}, Name: {material.MaterialName}, URL: {material.MaterialURL}");
-            }
-
-            Writer.WaitForKey();
-            System.Console.Clear();
-
-        }
-        public async Task ShowCourseAnnouncements(int courseId)
-        {
-            System.Console.Clear();
-
-            var courseAnnouncements = await _courseActions.GetCourseAnnouncements(courseId);
-
-            if (!courseAnnouncements.Any())
-            {
-                Writer.WriteMessage("No materials found.");
-                Writer.WaitForKey();
-                return;
-            }
-            Writer.WriteMessage("=== COURSE ANNOUNCEMENTS ===\n");
-            foreach (var announcement in courseAnnouncements)
-            {
-                Writer.WriteMessage($"Created at: {announcement.AnnouncementCreatedAt}, Title: {announcement.AnnouncementTitle}, Content: {announcement.AnnouncementContent}, Professor: {announcement.ProfessorName}");
-            }
-
-            Writer.WaitForKey();
-            System.Console.Clear();
-
-        }
+        }      
 
         public async Task ShowPrivateChatMenu(int userId)
         {
@@ -615,6 +574,165 @@ namespace MoodleApplication.Console.Views
             }
 
             Writer.WaitForKey();
+        }
+
+
+        public async Task ShowProfessorMenu(int userId)
+        {
+            System.Console.Clear();
+
+            bool exitRequested = false;
+
+            var professorMenuOptions = MenuOptions.CreateProfessorMenuOptions(this, userId);
+            while (!exitRequested)
+            {
+                Writer.DisplayMenu("Moodle - PROFESSOR MENU", professorMenuOptions);
+                var choice = Reader.ReadMenuChoice();
+
+                if (professorMenuOptions.ContainsKey(choice))
+                {
+                    exitRequested = await professorMenuOptions[choice].Action();
+                }
+                else
+                {
+                    System.Console.Clear();
+                    Writer.WriteMessage("Invalid option. Please try again.");
+                }
+            }
+            System.Console.Clear();
+        }
+
+        public async Task ShowProfessorCourses(int professorId)
+        {
+            System.Console.Clear();
+
+            var courses = await _userActions.GetTeachingCourses(professorId);
+
+            if (!courses.Any())
+            {
+                Writer.WriteMessage("No courses found.");
+                Writer.WaitForKey();
+                return;
+            }
+
+            bool exitRequested = false;
+
+            var coursesMenuOptions = MenuOptions.CreateProfessorCoursesMenuOptions(this, courses);
+            while (!exitRequested)
+            {
+                Writer.DisplayMenu("Moodle - MY COURSES", coursesMenuOptions);
+                var choice = Reader.ReadMenuChoice();
+
+                if (coursesMenuOptions.ContainsKey(choice))
+                {
+                    exitRequested = await coursesMenuOptions[choice].Action();
+                }
+                else
+                {
+                    System.Console.Clear();
+                    Writer.WriteMessage("Invalid option. Please try again.");
+                }
+            }
+            System.Console.Clear();
+        }
+
+        public async Task ShowProfessorCourseScreen(int courseId, string courseName)
+        {
+            System.Console.Clear();
+
+            bool exitRequested = false;
+
+            var courseMenuOptions = MenuOptions.CreateProfessorCourseMenuOptions(this, courseId, courseName);
+            while (!exitRequested)
+            {
+                Writer.DisplayMenu($"Moodle - {courseName.ToUpper()}", courseMenuOptions);
+                var choice = Reader.ReadMenuChoice();
+
+                if (courseMenuOptions.ContainsKey(choice))
+                {
+                    exitRequested = await courseMenuOptions[choice].Action();
+                }
+                else
+                {
+                    System.Console.Clear();
+                    Writer.WriteMessage("Invalid option. Please try again.");
+                }
+            }
+            System.Console.Clear();
+        }
+
+        public async Task ShowCourseStudents(int courseId, string courseName)
+        {
+            System.Console.Clear();
+            Writer.WriteMessage($"=== STUDENTS - {courseName} ===\n");
+
+            var students = await _courseActions.GetCourseStudents(courseId);
+
+            if (!students.Any())
+            {
+                Writer.WriteMessage("No students enrolled in this course.");
+            }
+            else
+            {
+                int index = 1;
+                foreach (var student in students)
+                {
+                    Writer.WriteMessage($"{index}. {student.StudentName} ({student.StudentEmail})");
+                    index++;
+                }
+            }
+
+            Writer.WaitForKey();
+            System.Console.Clear();
+        }
+
+        public async Task ShowCourseAnnouncements(int courseId)
+        {
+            System.Console.Clear();
+            Writer.WriteMessage("=== ANNOUNCEMENTS ===\n");
+
+            var announcements = await _courseActions.GetCourseAnnouncements(courseId);
+
+            if (!announcements.Any())
+            {
+                Writer.WriteMessage("No announcements found.");
+            }
+            else
+            {
+                foreach (var announcement in announcements)
+                {
+                    Writer.WriteMessage($"[{announcement.AnnouncementCreatedAt:dd.MM.yyyy HH:mm}] {announcement.AnnouncementTitle}");
+                    Writer.WriteMessage($"   {announcement.AnnouncementContent}");
+                    Writer.WriteMessage($"   By: {announcement.ProfessorName}\n");
+                }
+            }
+
+            Writer.WaitForKey();
+            System.Console.Clear();
+        }
+
+        public async Task ShowCourseMaterials(int courseId)
+        {
+            System.Console.Clear();
+            Writer.WriteMessage("=== MATERIALS ===\n");
+
+            var materials = await _courseActions.GetCourseMaterials(courseId);
+
+            if (!materials.Any())
+            {
+                Writer.WriteMessage("No materials found.");
+            }
+            else
+            {
+                foreach (var material in materials)
+                {
+                    Writer.WriteMessage($"[{material.MaterialAddedAt:dd.MM.yyyy}] {material.MaterialName}");
+                    Writer.WriteMessage($"   URL: {material.MaterialURL}\n");
+                }
+            }
+
+            Writer.WaitForKey();
+            System.Console.Clear();
         }
     }
 }

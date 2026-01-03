@@ -13,13 +13,22 @@ namespace MoodleApplication.Console.Actions
         private readonly GetUserRequestHandler _getUserRequestHandler;
         private readonly GetUserCoursesRequestHandler _getUserCoursesRequestHandler;      
         private readonly GetAllUsersRequestHandler _getAllUsersRequestHandler;
-        public UserActions(CreateUserRequestHandler createUserRequestHandler, GetUserRequestHandler getUserRequestHandler, GetUserCoursesRequestHandler getUserCoursesRequestHandler, GetAllUsersRequestHandler getAllUsersRequestHandler)
+        private readonly GetTeachingCoursesRequestHandler _getTeachingCoursesRequestHandler;
+
+        public UserActions(
+            CreateUserRequestHandler createUserRequestHandler, 
+            GetUserRequestHandler getUserRequestHandler, 
+            GetUserCoursesRequestHandler getUserCoursesRequestHandler, 
+            GetAllUsersRequestHandler getAllUsersRequestHandler,
+            GetTeachingCoursesRequestHandler getTeachingCoursesRequestHandler)
         {
             _createUserRequestHandler = createUserRequestHandler;
             _getUserRequestHandler = getUserRequestHandler;
             _getUserCoursesRequestHandler = getUserCoursesRequestHandler;
             _getAllUsersRequestHandler = getAllUsersRequestHandler;
+            _getTeachingCoursesRequestHandler = getTeachingCoursesRequestHandler;
         }
+
         public async Task<IEnumerable<UserResponse>> GetAllUsers(int currentUserId)
         {
             var request = new GetAllUsersRequest { CurrentUserId = currentUserId };
@@ -30,7 +39,9 @@ namespace MoodleApplication.Console.Actions
 
             return result.Value.Values;
         }
-        public async Task<bool> RegisterUser(string name, DateOnly dateofbirth,string email,string password) {
+
+        public async Task<bool> RegisterUser(string name, DateOnly dateofbirth, string email, string password)
+        {
             var createUserRequest = new CreateUserRequest
             {
                 Name = name,
@@ -40,8 +51,8 @@ namespace MoodleApplication.Console.Actions
             };
             var result = await _createUserRequestHandler.ProcessActiveRequestAsnync(createUserRequest);
             return result.HasError;
-            
         }
+
         public async Task<(bool IsSuccess, int UserId, string Role)> LoginUser(string email, string password)
         {
             var getUserRequest = new GetUserRequest
@@ -56,6 +67,7 @@ namespace MoodleApplication.Console.Actions
             }
             return (true, result.Value.UserId, result.Value.Role.ToString());
         }
+
         public async Task<IEnumerable<CoursesResponse>> GetUserCourses(int userId)
         {
             var getUserCoursesRequest = new GetUserCoursesRequest
@@ -72,7 +84,17 @@ namespace MoodleApplication.Console.Actions
                 CourseId = b.CourseId,
                 CourseName = b.CourseName
             });
-                
+        }
+
+        public async Task<IEnumerable<TeachingCourseResponse>> GetTeachingCourses(int professorId)
+        {
+            var request = new GetTeachingCoursesRequest { ProfessorId = professorId };
+            var result = await _getTeachingCoursesRequestHandler.ProcessActiveRequestAsnync(request);
+
+            if (result.Value == null)
+                return [];
+
+            return result.Value.Values;
         }
     }
 }

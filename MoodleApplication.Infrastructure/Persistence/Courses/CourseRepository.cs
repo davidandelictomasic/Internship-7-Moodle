@@ -52,7 +52,7 @@ namespace MoodleApplication.Infrastructure.Persistence.Chats
             return await _dbContext.Announcements
                  .Where(a => a.CourseId == courseId)
                  .Include(a => a.Professor)
-                 .OrderBy(a => a.CreatedAt)
+                 .OrderByDescending(a => a.CreatedAt)
                  .ToListAsync();
 
         }
@@ -61,12 +61,18 @@ namespace MoodleApplication.Infrastructure.Persistence.Chats
         {
             return await _dbContext.Materials
                  .Where(a => a.CourseId == courseId)
+                 .OrderByDescending(m => m.AddedAt)
                  .ToListAsync();
         }
 
-        public Task<IEnumerable<User>> GetStudentsForCourse(int courseId)
+        public async Task<IEnumerable<User>> GetStudentsForCourse(int courseId)
         {
-            throw new NotImplementedException();
+            return await _dbContext.CourseStudents
+                .Where(cs => cs.CourseId == courseId)
+                .Include(cs => cs.Student)
+                .OrderBy(cs => cs.Student.Name)
+                .Select(cs => cs.Student)
+                .ToListAsync();
         }
     }
 }

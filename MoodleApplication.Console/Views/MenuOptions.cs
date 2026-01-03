@@ -229,13 +229,81 @@ namespace MoodleApplication.Console.Views
                 menuOptions.AddOption(displayNumber, $"{user.Name} ({user.Email})", async () =>
                 {
                     await menuManager.ExecuteUserAction(user.UserId, user.Name ?? "Unknown", user.Email ?? "", action, currentRole);
-                    return true; // Return to previous menu after action
+                    return true; 
                 });
             }
 
             menuOptions.AddOption("0", "Back", async () => true);
 
             return menuOptions.Build();
+        }
+
+        
+
+        public static Dictionary<string, (string Description, Func<Task<bool>> Action)> CreateProfessorMenuOptions(MenuManager menuManager, int userId)
+        {
+            return new MenuOptions()
+                .AddOption("1", "Private chat", async () =>
+                {
+                    await menuManager.ShowPrivateChatMenu(userId);
+                    return false;
+                })
+                .AddOption("2", "My courses", async () =>
+                {
+                    await menuManager.ShowProfessorCourses(userId);
+                    return false;
+                })
+                .AddOption("3", "Log out", async () => true)
+                .Build();
+        }
+
+        public static Dictionary<string, (string Description, Func<Task<bool>> Action)> CreateProfessorCoursesMenuOptions(
+            MenuManager menuManager, 
+            IEnumerable<TeachingCourseResponse> courses)
+        {
+            var menuOptions = new MenuOptions();
+            var coursesList = courses.ToList();
+
+            for (int i = 0; i < coursesList.Count; i++)
+            {
+                var course = coursesList[i];
+                var displayNumber = (i + 1).ToString();
+
+                menuOptions.AddOption(displayNumber, course.CourseName ?? "Unnamed Course", async () =>
+                {
+                    await menuManager.ShowProfessorCourseScreen(course.CourseId, course.CourseName ?? "Course");
+                    return false;
+                });
+            }
+
+            menuOptions.AddOption("0", "Back", async () => true);
+
+            return menuOptions.Build();
+        }
+
+        public static Dictionary<string, (string Description, Func<Task<bool>> Action)> CreateProfessorCourseMenuOptions(
+            MenuManager menuManager, 
+            int courseId,
+            string courseName)
+        {
+            return new MenuOptions()
+                .AddOption("1", "Students", async () =>
+                {
+                    await menuManager.ShowCourseStudents(courseId, courseName);
+                    return false;
+                })
+                .AddOption("2", "Announcements", async () =>
+                {
+                    await menuManager.ShowCourseAnnouncements(courseId);
+                    return false;
+                })
+                .AddOption("3", "Materials", async () =>
+                {
+                    await menuManager.ShowCourseMaterials(courseId);
+                    return false;
+                })
+                .AddOption("0", "Back", async () => true)
+                .Build();
         }
     }
 }

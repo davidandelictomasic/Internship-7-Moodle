@@ -12,10 +12,17 @@ namespace MoodleApplication.Console.Actions
     {
         private readonly GetCourseMaterialsRequestHandler _getCourseMaterialsRequestHandler;
         private readonly GetCourseAnnouncementsRequestHandler _getCourseAnnouncementsRequestHandler;
-        public CourseActions(GetCourseMaterialsRequestHandler getCourseMaterialsRequestHandler, GetCourseAnnouncementsRequestHandler getCourseAnnouncementsRequestHandler)
+        private readonly GetCourseStudentsRequestHandler _getCourseStudentsRequestHandler;
+
+        public CourseActions(
+            GetCourseMaterialsRequestHandler getCourseMaterialsRequestHandler, 
+            GetCourseAnnouncementsRequestHandler getCourseAnnouncementsRequestHandler, 
+            GetCourseStudentsRequestHandler getCourseStudentsRequestHandler
+            )
         {
             _getCourseMaterialsRequestHandler = getCourseMaterialsRequestHandler;
             _getCourseAnnouncementsRequestHandler = getCourseAnnouncementsRequestHandler;
+            _getCourseStudentsRequestHandler = getCourseStudentsRequestHandler;
         }
         public async Task<IEnumerable<MaterialsResponse>> GetCourseMaterials(int courseId)
         {
@@ -53,6 +60,16 @@ namespace MoodleApplication.Console.Actions
                 AnnouncementContent = ca.AnnouncementContent,
                 ProfessorName = ca.ProfessorName
             });
+        }
+        public async Task<IEnumerable<CourseStudentResponse>> GetCourseStudents(int courseId)
+        {
+            var request = new GetCourseStudentsRequest { CourseId = courseId };
+            var result = await _getCourseStudentsRequestHandler.ProcessActiveRequestAsnync(request);
+
+            if (result.Value == null)
+                return [];
+
+            return result.Value.Values;
         }
     }
 }

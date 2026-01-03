@@ -71,9 +71,11 @@ namespace MoodleApplication.Infrastructure.Persistence.Users
                 .ToListAsync();
         }
 
-        public Task<IEnumerable<Course>> GetTeachingCourses(int professorId)
+        public async Task<IEnumerable<Course>> GetTeachingCourses(int professorId)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Courses
+                .Where(c => c.ProfessorId == professorId)
+                .ToListAsync();
         }
 
         public async Task UpdateEmail(int userId, string newEmail)
