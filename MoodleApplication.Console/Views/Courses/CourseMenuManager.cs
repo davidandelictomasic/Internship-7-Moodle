@@ -1,8 +1,9 @@
 using MoodleApplication.Console.Actions;
 using MoodleApplication.Console.Helpers;
+using MoodleApplication.Console.Views.Common;
 
 namespace MoodleApplication.Console.Views.Courses
-{    
+{
     public class CourseMenuManager
     {
         private readonly CourseActions _courseActions;
@@ -84,6 +85,127 @@ namespace MoodleApplication.Console.Views.Courses
 
             Writer.WaitForKey();
             System.Console.Clear();
+        }
+
+        
+
+        public async Task ShowEditCourseMenu(int courseId, string courseName, int professorId)
+        {
+            bool exitRequested = false;
+
+            var editCourseMenuOptions = MenuOptions.CreateEditCourseMenuOptions(this, courseId, courseName, professorId);
+            while (!exitRequested)
+            {
+                System.Console.Clear();
+                Writer.DisplayMenu($"Moodle - EDIT: {courseName.ToUpper()}", editCourseMenuOptions);
+                var choice = Reader.ReadMenuChoice();
+
+                if (editCourseMenuOptions.ContainsKey(choice))
+                {
+                    exitRequested = await editCourseMenuOptions[choice].Action();
+                }
+                else
+                {
+                    Writer.WriteMessage("Invalid option. Please try again.");
+                    Writer.WaitForKey();
+                }
+            }
+        }
+
+        public async Task ShowAddStudentMenu(int courseId, string courseName)
+        {
+            System.Console.Clear();
+
+            var availableStudents = await _courseActions.GetStudentsNotInCourse(courseId);
+
+            if (!availableStudents.Any())
+            {
+                Writer.WriteMessage("No available students to add (all students are already enrolled).");
+                Writer.WaitForKey();
+                return;
+            }
+
+            bool exitRequested = false;
+
+            var studentListMenuOptions = MenuOptions.CreateAddStudentMenuOptions(this, courseId, courseName, availableStudents);
+            while (!exitRequested)
+            {
+                System.Console.Clear();
+                Writer.DisplayMenu($"Moodle - ADD STUDENT TO: {courseName.ToUpper()}", studentListMenuOptions);
+                var choice = Reader.ReadMenuChoice();
+
+                if (studentListMenuOptions.ContainsKey(choice))
+                {
+                    exitRequested = await studentListMenuOptions[choice].Action();
+                }
+                else
+                {
+                    Writer.WriteMessage("Invalid option. Please try again.");
+                    Writer.WaitForKey();
+                }
+            }
+        }
+
+        public async Task AddStudentToCourse(int courseId, int studentId, string studentName)
+        {
+            System.Console.Clear();
+
+            var success = await _courseActions.AddStudentToCourse(courseId, studentId);
+
+            if (success)
+            {
+                Writer.WriteMessage($"Student '{studentName}' added to course successfully!");
+            }
+            else
+            {
+                Writer.WriteMessage("Error while adding student to course.");
+            }
+
+            Writer.WaitForKey();
+        }
+
+        public async Task ShowAddAnnouncementScreen(int courseId, int professorId)
+        {
+            System.Console.Clear();
+            Writer.WriteMessage("=== ADD ANNOUNCEMENT ===\n");
+
+            var title = Reader.ReadString("Title: ");
+            var content = Reader.ReadString("Content: ");
+
+            var success = await _courseActions.AddAnnouncement(courseId, professorId, title, content);
+
+            if (success)
+            {
+                Writer.WriteMessage("\nAnnouncement published successfully!");
+            }
+            else
+            {
+                Writer.WriteMessage("\nError publishing announcement.");
+            }
+
+            Writer.WaitForKey();
+        }
+
+        public async Task ShowAddMaterialScreen(int courseId)
+        {
+            System.Console.Clear();
+            Writer.WriteMessage("=== ADD MATERIAL ===\n");
+
+            var name = Reader.ReadString("Material name: ");
+            var url = Reader.ReadUrl("Material URL: ");
+
+            var success = await _courseActions.AddMaterial(courseId, name, url);
+
+            if (success)
+            {
+                Writer.WriteMessage("\nMaterial added successfully!");
+            }
+            else
+            {
+                Writer.WriteMessage("\nError adding material.");
+            }
+
+            Writer.WaitForKey();
         }
     }
 }

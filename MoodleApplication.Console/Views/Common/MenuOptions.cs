@@ -1,8 +1,10 @@
 using MoodleApplication.Application.Users.Admin;
 using MoodleApplication.Application.Users.Chats;
+using MoodleApplication.Application.Users.Courses;
 using MoodleApplication.Application.Users.User;
 using MoodleApplication.Console.Views.Admin;
 using MoodleApplication.Console.Views.Chats;
+using MoodleApplication.Console.Views.Courses;
 using MoodleApplication.Console.Views.Users;
 using MoodleApplication.Domain.Enumumerations.Users;
 
@@ -117,7 +119,12 @@ namespace MoodleApplication.Console.Views.Common
                     await userMenu.ShowProfessorCourses(userId);
                     return false;
                 })
-                .AddOption("3", "Log out", async () => true)
+                .AddOption("3", "Edit courses", async () =>
+                {
+                    await userMenu.ShowEditCoursesMenu(userId);
+                    return false;
+                })
+                .AddOption("4", "Log out", async () => true)
                 .Build();
         }
 
@@ -163,6 +170,73 @@ namespace MoodleApplication.Console.Views.Common
                 })
                 .AddOption("0", "Back", async () => true)
                 .Build();
+        }
+
+        public static Dictionary<string, (string Description, Func<Task<bool>> Action)> CreateEditCoursesMenuOptions(UserMenuManager userMenu, IEnumerable<TeachingCourseResponse> courses, int professorId)
+        {
+            var menuOptions = new MenuOptions();
+            var coursesList = courses.ToList();
+
+            for (int i = 0; i < coursesList.Count; i++)
+            {
+                var course = coursesList[i];
+                var displayNumber = (i + 1).ToString();
+
+                menuOptions.AddOption(displayNumber, course.CourseName ?? "Unnamed Course", async () =>
+                {
+                    await userMenu.ShowEditCourseScreen(course.CourseId, course.CourseName ?? "Course", professorId);
+                    return false;
+                });
+            }
+
+            menuOptions.AddOption("0", "Back", async () => true);
+
+            return menuOptions.Build();
+        }
+
+
+        public static Dictionary<string, (string Description, Func<Task<bool>> Action)> CreateEditCourseMenuOptions(CourseMenuManager courseMenu, int courseId, string courseName, int professorId)
+        {
+            return new MenuOptions()
+                .AddOption("1", "Add student", async () =>
+                {
+                    await courseMenu.ShowAddStudentMenu(courseId, courseName);
+                    return false;
+                })
+                .AddOption("2", "Add announcement", async () =>
+                {
+                    await courseMenu.ShowAddAnnouncementScreen(courseId, professorId);
+                    return false;
+                })
+                .AddOption("3", "Add material", async () =>
+                {
+                    await courseMenu.ShowAddMaterialScreen(courseId);
+                    return false;
+                })
+                .AddOption("0", "Back", async () => true)
+                .Build();
+        }
+
+        public static Dictionary<string, (string Description, Func<Task<bool>> Action)> CreateAddStudentMenuOptions(CourseMenuManager courseMenu, int courseId, string courseName, IEnumerable<AvailableStudentResponse> students)
+        {
+            var menuOptions = new MenuOptions();
+            var studentsList = students.ToList();
+
+            for (int i = 0; i < studentsList.Count; i++)
+            {
+                var student = studentsList[i];
+                var displayNumber = (i + 1).ToString();
+
+                menuOptions.AddOption(displayNumber, $"{student.StudentName} ({student.StudentEmail})", async () =>
+                {
+                    await courseMenu.AddStudentToCourse(courseId, student.StudentId, student.StudentName ?? "Unknown");
+                    return true; 
+                });
+            }
+
+            menuOptions.AddOption("0", "Back", async () => true);
+
+            return menuOptions.Build();
         }
 
 

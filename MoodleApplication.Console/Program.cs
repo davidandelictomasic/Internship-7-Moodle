@@ -26,6 +26,10 @@ builder.Services.AddScoped<GetTeachingCoursesRequestHandler>();
 builder.Services.AddScoped<GetCourseMaterialsRequestHandler>();
 builder.Services.AddScoped<GetCourseAnnouncementsRequestHandler>();
 builder.Services.AddScoped<GetCourseStudentsRequestHandler>();
+builder.Services.AddScoped<GetStudentsNotInCourseRequestHandler>();
+builder.Services.AddScoped<AddStudentToCourseRequestHandler>();
+builder.Services.AddScoped<AddAnnouncementRequestHandler>();
+builder.Services.AddScoped<AddMaterialRequestHandler>();
 
 builder.Services.AddScoped<GetUserChatRoomsRequestHandler>();
 builder.Services.AddScoped<GetChatMessagesRequestHandler>();

@@ -111,5 +111,31 @@ namespace MoodleApplication.Console.Helpers
                 System.Console.WriteLine("Neispravan CAPTCHA. Pokušajte ponovo.");
             }
         }
+
+        public static string ReadUrl(string prompt)
+        {
+            string input;
+            Regex urlRegex = new(@"^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$", RegexOptions.IgnoreCase);
+
+            while (true)
+            {
+                System.Console.Write(prompt);
+                input = System.Console.ReadLine()?.Trim() ?? "";
+
+                if (string.IsNullOrEmpty(input))
+                {
+                    System.Console.WriteLine("URL ne smije biti prazan. Pokušajte ponovo.");
+                    continue;
+                }
+
+                if (!urlRegex.IsMatch(input))
+                {
+                    System.Console.WriteLine("Neispravan format URL-a. Pokušajte ponovo (npr. https://example.com/file).");
+                    continue;
+                }
+
+                return input;
+            }
+        }
     }
 }

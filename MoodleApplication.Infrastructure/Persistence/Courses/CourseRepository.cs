@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using MoodleApplication.Domain.Entities.Courses;
 using MoodleApplication.Domain.Entities.Users;
+using MoodleApplication.Domain.Enumumerations.Users;
 using MoodleApplication.Domain.Persistence.Courses;
 using MoodleApplication.Infrastructure.Database;
 using MoodleApplication.Infrastructure.Persistence.Common;
@@ -22,29 +18,54 @@ namespace MoodleApplication.Infrastructure.Persistence.Chats
             _dbContext = dbContext;
         }
 
-        public Task AddAnnouncement(int courseId, Announcement announcement)
+        public async Task AddAnnouncement(int courseId, Announcement announcement)
         {
-            throw new NotImplementedException();
+            announcement.CourseId = courseId;
+            announcement.CreatedAt = DateTime.UtcNow;
+            await _dbContext.Announcements.AddAsync(announcement);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public Task AddMaterial(int courseId, Material material)
+        public async Task AddMaterial(int courseId, Material material)
         {
-            throw new NotImplementedException();
+            material.CourseId = courseId;
+            material.AddedAt = DateTime.UtcNow;
+            await _dbContext.Materials.AddAsync(material);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public Task AddStudentToCourse(int courseId, int studentId)
+        public async Task AddStudentToCourse(int courseId, int studentId)
         {
-            throw new NotImplementedException();
+            var enrollment = new CourseStudent
+            {
+                CourseId = courseId,
+                UserId = studentId
+            };
+            await _dbContext.CourseStudents.AddAsync(enrollment);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<Course>> GetAllCourses()
+        public async Task<IEnumerable<User>> GetStudentsNotInCourse(int courseId)
         {
-            throw new NotImplementedException();
+            var enrolledStudentIds = await _dbContext.CourseStudents
+                .Where(cs => cs.CourseId == courseId)
+                .Select(cs => cs.UserId)
+                .ToListAsync();
+
+            return await _dbContext.Users
+                .Where(u => u.Role == UserRole.Student && !enrolledStudentIds.Contains(u.Id))
+                .OrderBy(u => u.Name)
+                .ToListAsync();
         }
 
-        public Task<Course?> GetById(int courseId)
+        public async Task<IEnumerable<Course>> GetAllCourses()
         {
-            throw new NotImplementedException();
+            return await _dbContext.Courses.ToListAsync();
+        }
+
+        public async Task<Course?> GetById(int courseId)
+        {
+            return await _dbContext.Courses.FirstOrDefaultAsync(c => c.Id == courseId);
         }
 
         public async Task<IEnumerable<Announcement>> GetCourseAnnouncements(int courseId)
@@ -54,7 +75,6 @@ namespace MoodleApplication.Infrastructure.Persistence.Chats
                  .Include(a => a.Professor)
                  .OrderByDescending(a => a.CreatedAt)
                  .ToListAsync();
-
         }
 
         public async Task<IEnumerable<Material>> GetCourseMaterials(int courseId)

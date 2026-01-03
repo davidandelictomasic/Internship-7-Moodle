@@ -19,11 +19,9 @@ namespace MoodleApplication.Console.Views.Users
             _courseMenu = courseMenu;
         }
 
-       
+
         public async Task ShowStudentMenu(int userId)
         {
-            System.Console.Clear();
-
             bool exitRequested = false;
 
             var studentMenuOptions = MenuOptions.CreateStudentMenuOptions(this, userId);
@@ -40,11 +38,10 @@ namespace MoodleApplication.Console.Views.Users
                 }
                 else
                 {
-                    System.Console.Clear();
                     Writer.WriteMessage("Invalid option. Please try again.");
                     Writer.WaitForKey();
                 }
-            }            
+            }
         }
 
         public async Task ShowPrivateChatMenu(int userId)
@@ -54,12 +51,11 @@ namespace MoodleApplication.Console.Views.Users
 
         public async Task ShowUserCourses(int userId)
         {
-            System.Console.Clear();
-
             var userCourses = await _userActions.GetUserCourses(userId);
 
             if (!userCourses.Any())
             {
+                System.Console.Clear();
                 Writer.WriteMessage("No courses found.");
                 Writer.WaitForKey();
                 return;
@@ -81,7 +77,6 @@ namespace MoodleApplication.Console.Views.Users
                 }
                 else
                 {
-                    System.Console.Clear();
                     Writer.WriteMessage("Invalid option. Please try again.");
                     Writer.WaitForKey();
                 }
@@ -106,7 +101,6 @@ namespace MoodleApplication.Console.Views.Users
                 }
                 else
                 {
-                    System.Console.Clear();
                     Writer.WriteMessage("Invalid option. Please try again.");
                     Writer.WaitForKey();
                 }
@@ -126,7 +120,6 @@ namespace MoodleApplication.Console.Views.Users
 
         public async Task ShowProfessorMenu(int userId)
         {
-
             bool exitRequested = false;
 
             var professorMenuOptions = MenuOptions.CreateProfessorMenuOptions(this, userId);
@@ -143,24 +136,21 @@ namespace MoodleApplication.Console.Views.Users
                 }
                 else
                 {
-                    System.Console.Clear();
                     Writer.WriteMessage("Invalid option. Please try again.");
+                    Writer.WaitForKey();
                 }
             }
-            System.Console.Clear();
         }
 
         public async Task ShowProfessorCourses(int professorId)
         {
-            System.Console.Clear();
-
             var courses = await _userActions.GetTeachingCourses(professorId);
 
             if (!courses.Any())
             {
+                System.Console.Clear();
                 Writer.WriteMessage("No courses found.");
                 Writer.WaitForKey();
-                System.Console.Clear();
                 return;
             }
 
@@ -169,6 +159,8 @@ namespace MoodleApplication.Console.Views.Users
             var coursesMenuOptions = MenuOptions.CreateProfessorCoursesMenuOptions(this, courses);
             while (!exitRequested)
             {
+                System.Console.Clear();
+
                 Writer.DisplayMenu("Moodle - MY COURSES", coursesMenuOptions);
                 var choice = Reader.ReadMenuChoice();
 
@@ -178,7 +170,6 @@ namespace MoodleApplication.Console.Views.Users
                 }
                 else
                 {
-                    System.Console.Clear();
                     Writer.WriteMessage("Invalid option. Please try again.");
                     Writer.WaitForKey();
                 }
@@ -187,7 +178,6 @@ namespace MoodleApplication.Console.Views.Users
 
         public async Task ShowProfessorCourseScreen(int courseId, string courseName)
         {
-
             bool exitRequested = false;
 
             var courseMenuOptions = MenuOptions.CreateProfessorCourseMenuOptions(this, courseId, courseName);
@@ -204,7 +194,6 @@ namespace MoodleApplication.Console.Views.Users
                 }
                 else
                 {
-                    System.Console.Clear();
                     Writer.WriteMessage("Invalid option. Please try again.");
                     Writer.WaitForKey();
                 }
@@ -214,6 +203,46 @@ namespace MoodleApplication.Console.Views.Users
         public async Task ShowCourseStudents(int courseId, string courseName)
         {
             await _courseMenu.ShowCourseStudents(courseId, courseName);
+        }
+
+
+        public async Task ShowEditCoursesMenu(int professorId)
+        {
+            var courses = await _userActions.GetTeachingCourses(professorId);
+
+            if (!courses.Any())
+            {
+                System.Console.Clear();
+                Writer.WriteMessage("No courses found.");
+                Writer.WaitForKey();
+                return;
+            }
+
+            bool exitRequested = false;
+
+            var editCoursesMenuOptions = MenuOptions.CreateEditCoursesMenuOptions(this, courses, professorId);
+            while (!exitRequested)
+            {
+                System.Console.Clear();
+
+                Writer.DisplayMenu("Moodle - EDIT COURSES", editCoursesMenuOptions);
+                var choice = Reader.ReadMenuChoice();
+
+                if (editCoursesMenuOptions.ContainsKey(choice))
+                {
+                    exitRequested = await editCoursesMenuOptions[choice].Action();
+                }
+                else
+                {
+                    Writer.WriteMessage("Invalid option. Please try again.");
+                    Writer.WaitForKey();
+                }
+            }
+        }
+
+        public async Task ShowEditCourseScreen(int courseId, string courseName, int professorId)
+        {
+            await _courseMenu.ShowEditCourseMenu(courseId, courseName, professorId);
         }
     }
 }
