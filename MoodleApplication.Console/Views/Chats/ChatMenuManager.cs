@@ -46,7 +46,7 @@ namespace MoodleApplication.Console.Views.Chats
         {
             System.Console.Clear();
 
-            var users = await _userActions.GetAllUsers(currentUserId);
+            var users = await _userActions.GetUsersWithoutExistingChat(currentUserId);
 
             if (!users.Any())
             {

@@ -44,7 +44,7 @@ namespace MoodleApplication.Console.Views.Common
                     await menuManager.HandleUserRegister();
                     return false;
                 })
-                .AddOption("3", "Exit", async () => true)
+                .AddOption("0", "Exit", async () => true)
                 .Build();
         }
 
@@ -62,7 +62,7 @@ namespace MoodleApplication.Console.Views.Common
                     await userMenu.ShowUserCourses(userId);
                     return false;
                 })
-                .AddOption("3", "Log out", async () => true)
+                .AddOption("0", "Log out", async () => true)
                 .Build();
         }
 
@@ -101,7 +101,7 @@ namespace MoodleApplication.Console.Views.Common
                     await userMenu.ShowCourseMaterials(courseId);
                     return false;
                 })
-                .AddOption("3", "Back", async () => true)
+                .AddOption("0", "Back", async () => true)
                 .Build();
         }
 
@@ -124,7 +124,7 @@ namespace MoodleApplication.Console.Views.Common
                     await userMenu.ShowEditCoursesMenu(userId);
                     return false;
                 })
-                .AddOption("4", "Log out", async () => true)
+                .AddOption("0", "Log out", async () => true)
                 .Build();
         }
 
@@ -253,7 +253,7 @@ namespace MoodleApplication.Console.Views.Common
                     await chatMenu.ShowMyChatRoomsMenu(userId);
                     return false;
                 })
-                .AddOption("3", "Back", async () => true)
+                .AddOption("0", "Back", async () => true)
                 .Build();
         }
 
@@ -270,7 +270,7 @@ namespace MoodleApplication.Console.Views.Common
                 menuOptions.AddOption(displayNumber, $"{user.Name} ({user.Email})", async () =>
                 {
                     await chatMenu.ShowSendMessageScreen(currentUserId, user.UserId, user.Name ?? "Unknown");
-                    return false;
+                    return true;
                 });
             }
 
@@ -315,7 +315,7 @@ namespace MoodleApplication.Console.Views.Common
                     await adminMenu.ShowEditUsersMenu();
                     return false;
                 })
-                .AddOption("3", "Log out", async () => true)
+                .AddOption("0", "Log out", async () => true)
                 .Build();
         }
 

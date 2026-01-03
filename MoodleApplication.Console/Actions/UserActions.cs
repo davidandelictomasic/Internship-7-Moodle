@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MoodleApplication.Application.Users.Chats;
 using MoodleApplication.Application.Users.User;
 
 namespace MoodleApplication.Console.Actions
@@ -14,19 +15,23 @@ namespace MoodleApplication.Console.Actions
         private readonly GetUserCoursesRequestHandler _getUserCoursesRequestHandler;      
         private readonly GetAllUsersRequestHandler _getAllUsersRequestHandler;
         private readonly GetTeachingCoursesRequestHandler _getTeachingCoursesRequestHandler;
+        private readonly GetUserChatRoomsRequestHandler _getUserChatRoomsRequestHandler;
 
         public UserActions(
             CreateUserRequestHandler createUserRequestHandler, 
             GetUserRequestHandler getUserRequestHandler, 
             GetUserCoursesRequestHandler getUserCoursesRequestHandler, 
             GetAllUsersRequestHandler getAllUsersRequestHandler,
-            GetTeachingCoursesRequestHandler getTeachingCoursesRequestHandler)
+            GetTeachingCoursesRequestHandler getTeachingCoursesRequestHandler,
+            GetUserChatRoomsRequestHandler getUserChatRoomsRequestHandler
+            )
         {
             _createUserRequestHandler = createUserRequestHandler;
             _getUserRequestHandler = getUserRequestHandler;
             _getUserCoursesRequestHandler = getUserCoursesRequestHandler;
             _getAllUsersRequestHandler = getAllUsersRequestHandler;
             _getTeachingCoursesRequestHandler = getTeachingCoursesRequestHandler;
+            _getUserChatRoomsRequestHandler = getUserChatRoomsRequestHandler;
         }
 
         public async Task<IEnumerable<UserResponse>> GetAllUsers(int currentUserId)
@@ -101,6 +106,26 @@ namespace MoodleApplication.Console.Actions
                 return [];
 
             return result.Value.Values;
+        }
+
+        public async Task<IEnumerable<UserResponse>> GetUsersWithoutExistingChat(int currentUserId)
+        {
+            
+            var allUsers = await _getAllUsersRequestHandler.ProcessActiveRequestAsnync(
+                new GetAllUsersRequest { CurrentUserId = currentUserId });
+
+            if (allUsers.Value == null)
+                return [];
+
+            
+            var existingChatRooms = await _getUserChatRoomsRequestHandler.ProcessActiveRequestAsnync(
+                new GetUserChatRoomsRequest { UserId = currentUserId });
+
+            var usersWithChat = existingChatRooms.Value?.Values
+                .Select(cr => cr.OtherUserId)
+                .ToHashSet() ?? [];
+
+            return allUsers.Value.Values.Where(u => !usersWithChat.Contains(u.UserId));
         }
     }
 }

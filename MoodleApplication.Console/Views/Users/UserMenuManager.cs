@@ -234,8 +234,10 @@ namespace MoodleApplication.Console.Views.Users
                 }
                 else
                 {
+                    System.Console.Clear();
                     Writer.WriteMessage("Invalid option. Please try again.");
                     Writer.WaitForKey();
+
                 }
             }
         }

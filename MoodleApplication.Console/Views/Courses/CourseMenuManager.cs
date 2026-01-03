@@ -106,6 +106,7 @@ namespace MoodleApplication.Console.Views.Courses
                 }
                 else
                 {
+                    System.Console.Clear();
                     Writer.WriteMessage("Invalid option. Please try again.");
                     Writer.WaitForKey();
                 }
@@ -140,6 +141,7 @@ namespace MoodleApplication.Console.Views.Courses
                 }
                 else
                 {
+                    System.Console.Clear();
                     Writer.WriteMessage("Invalid option. Please try again.");
                     Writer.WaitForKey();
                 }
