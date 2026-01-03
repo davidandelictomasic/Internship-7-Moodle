@@ -54,7 +54,9 @@ namespace MoodleApplication.Infrastructure.Persistence.Chats
             return await _dbContext.ChatRooms
                 .Include(c => c.FirstUser)
                 .Include(c => c.SecondUser)
+                .Include(c => c.Messages)
                 .Where(c => c.FirstUserId == userId || c.SecondUserId == userId)
+                .OrderByDescending(c => c.Messages.Max(m => m.SentAt))
                 .ToListAsync();
         }
 
