@@ -46,7 +46,9 @@ namespace MoodleApplication.Domain.Entities.Users
             var validationResult = new ValidationResult();
             if (Name?.Length > NameMaxLength)
                 validationResult.AddValidationItem(UserValidationItems.NameMaxLength);
-
+            var existingUserByEmail = await userRepository.GetByEmail(Email);
+            if (existingUserByEmail != null)
+                validationResult.AddValidationItem(UserValidationItems.EmailUnique);
             return validationResult;
 
         }

@@ -1,4 +1,5 @@
 ﻿using MoodleApplication.Application.Common.Model;
+using MoodleApplication.Domain.Common.Validation.ValidationItems;
 using MoodleApplication.Domain.Persistence.Users;
 
 namespace MoodleApplication.Application.Users.User
@@ -29,7 +30,7 @@ namespace MoodleApplication.Application.Users.User
             };
 
             var validationResult = await user.Create(_unitOfWork.UserRepository);
-            result.SetValidationResult(validationResult.ValidationResult);
+            result.SetValidationResult(validationResult.ValidationResult);    
             if (result.HasError)
                 return result;
 

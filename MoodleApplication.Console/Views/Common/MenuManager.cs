@@ -111,17 +111,23 @@ namespace MoodleApplication.Console.Views.Common
             var captcha = Writer.GenerateCaptcha();
             Writer.WriteMessage($"CAPTCHA: {captcha}");
             Reader.ValidateCaptcha(captcha);
-            int? resultId = await _userActions.RegisterUser(userName, userDob, userEmail, userPassword);
-            if (resultId != null)
+            var result = await _userActions.RegisterUser(userName, userDob, userEmail, userPassword);
+            if (result.UserId != null)
             {
                 Writer.WriteMessage("User registered successfully.");
                 Writer.WaitForKey();
-                await UserMenu.ShowStudentMenu(resultId.Value);
+                await UserMenu.ShowStudentMenu(result.UserId.Value);
 
             }
             else
             {
+                if(result.errors.Any())                
+                    foreach (var error in result.errors)                    
+                        Writer.WriteMessage($"Error: {error}");
+                   
+                
                 Writer.WriteMessage("User registration failed.");
+                
                 Writer.WaitForKey();
             }
         }
