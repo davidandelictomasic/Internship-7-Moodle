@@ -17,13 +17,6 @@ namespace MoodleApplication.Domain.Entities.Chats
         public DateTime SentAt { get;  set; } = DateTime.UtcNow;
 
 
-        //public Message(ChatRoom chatRoom, User sender, string content)
-        //{
-        //    ChatRoom = chatRoom;
-        //    ChatRoomId = chatRoom.Id;
-        //    Sender = sender;
-        //    SenderId = sender.Id;
-        //    Content = content;
-        //}
+        
     }
 }

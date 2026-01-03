@@ -6,7 +6,7 @@ using MoodleApplication.Application.Users.Chats;
 using MoodleApplication.Application.Users.Courses;
 using MoodleApplication.Application.Users.User;
 using MoodleApplication.Console.Actions;
-using MoodleApplication.Console.Views;
+using MoodleApplication.Console.Views.Common;
 using MoodleApplication.Infrastructure.Database;
 
 Console.WriteLine("Hello, World!");
@@ -36,17 +36,14 @@ builder.Services.AddScoped<DeleteUserRequestHandler>();
 builder.Services.AddScoped<UpdateUserEmailRequestHandler>();
 builder.Services.AddScoped<ChangeUserRoleRequestHandler>();
 
-builder.Services.AddScoped<MenuManager>();
 builder.Services.AddScoped<UserActions>();
 builder.Services.AddScoped<CourseActions>();
 builder.Services.AddScoped<ChatActions>();
 builder.Services.AddScoped<AdminActions>();
 
-
+builder.Services.AddScoped<MenuManager>();
 
 var host = builder.Build();
-
-
 
 using (var scope = host.Services.CreateScope())
 {
