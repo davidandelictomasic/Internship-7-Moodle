@@ -95,6 +95,12 @@ namespace MoodleApplication.Console.Views.Common
             {
                 Writer.WriteMessage("Login failed. Please check your credentials.");
                 Writer.WaitForKey();
+                for (int i = 30; i > 0; i--)
+                {
+                    System.Console.Write($"\rRetry available in {i} seconds...  ");
+                    await Task.Delay(1000);
+                }
+                System.Console.WriteLine();
             }
         }
 
