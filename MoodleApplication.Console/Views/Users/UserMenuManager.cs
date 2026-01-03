@@ -42,9 +42,9 @@ namespace MoodleApplication.Console.Views.Users
                 {
                     System.Console.Clear();
                     Writer.WriteMessage("Invalid option. Please try again.");
+                    Writer.WaitForKey();
                 }
-            }
-            System.Console.Clear();
+            }            
         }
 
         public async Task ShowPrivateChatMenu(int userId)
@@ -70,6 +70,8 @@ namespace MoodleApplication.Console.Views.Users
             var coursesMenuOptions = MenuOptions.CreateStudentCoursesMenuOptions(this, userCourses);
             while (!exitRequested)
             {
+                System.Console.Clear();
+
                 Writer.DisplayMenu("Moodle - MY COURSES", coursesMenuOptions);
                 var choice = Reader.ReadMenuChoice();
 
@@ -81,19 +83,20 @@ namespace MoodleApplication.Console.Views.Users
                 {
                     System.Console.Clear();
                     Writer.WriteMessage("Invalid option. Please try again.");
+                    Writer.WaitForKey();
                 }
             }
-            System.Console.Clear();
         }
 
         public async Task ShowSelectedCourseMenu(int courseId)
         {
-            System.Console.Clear();
             bool exitRequested = false;
 
             var studentCourseMenuOptions = MenuOptions.CreateStudentCourseMenuOptions(this, courseId);
             while (!exitRequested)
             {
+                System.Console.Clear();
+
                 Writer.DisplayMenu("Moodle - COURSE", studentCourseMenuOptions);
                 var choice = Reader.ReadMenuChoice();
 
@@ -105,9 +108,9 @@ namespace MoodleApplication.Console.Views.Users
                 {
                     System.Console.Clear();
                     Writer.WriteMessage("Invalid option. Please try again.");
+                    Writer.WaitForKey();
                 }
             }
-            System.Console.Clear();
         }
 
         public async Task ShowCourseAnnouncements(int courseId)
@@ -177,20 +180,21 @@ namespace MoodleApplication.Console.Views.Users
                 {
                     System.Console.Clear();
                     Writer.WriteMessage("Invalid option. Please try again.");
+                    Writer.WaitForKey();
                 }
             }
-            System.Console.Clear();
         }
 
         public async Task ShowProfessorCourseScreen(int courseId, string courseName)
         {
-            System.Console.Clear();
 
             bool exitRequested = false;
 
             var courseMenuOptions = MenuOptions.CreateProfessorCourseMenuOptions(this, courseId, courseName);
             while (!exitRequested)
             {
+                System.Console.Clear();
+
                 Writer.DisplayMenu($"Moodle - {courseName.ToUpper()}", courseMenuOptions);
                 var choice = Reader.ReadMenuChoice();
 
@@ -202,9 +206,9 @@ namespace MoodleApplication.Console.Views.Users
                 {
                     System.Console.Clear();
                     Writer.WriteMessage("Invalid option. Please try again.");
+                    Writer.WaitForKey();
                 }
             }
-            System.Console.Clear();
         }
 
         public async Task ShowCourseStudents(int courseId, string courseName)

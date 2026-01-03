@@ -17,13 +17,14 @@ namespace MoodleApplication.Console.Views.Chats
 
         public async Task ShowPrivateChatMenu(int userId)
         {
-            System.Console.Clear();
+            
 
             bool exitRequested = false;
 
             var privateChatMenuOptions = MenuOptions.CreatePrivateChatMenuOptions(this, userId);
             while (!exitRequested)
             {
+                System.Console.Clear();
                 Writer.DisplayMenu("Moodle - PRIVATE CHAT", privateChatMenuOptions);
                 var choice = Reader.ReadMenuChoice();
 
@@ -35,6 +36,7 @@ namespace MoodleApplication.Console.Views.Chats
                 {
                     System.Console.Clear();
                     Writer.WriteMessage("Invalid option. Please try again.");
+                    Writer.WaitForKey();
                 }
             }
             System.Console.Clear();
@@ -58,6 +60,8 @@ namespace MoodleApplication.Console.Views.Chats
             var usersMenuOptions = MenuOptions.CreateUsersListMenuOptions(this, currentUserId, users);
             while (!exitRequested)
             {
+                System.Console.Clear();
+
                 Writer.DisplayMenu("Moodle - SEND MESSAGE TO USER", usersMenuOptions);
                 var choice = Reader.ReadMenuChoice();
 
@@ -69,9 +73,9 @@ namespace MoodleApplication.Console.Views.Chats
                 {
                     System.Console.Clear();
                     Writer.WriteMessage("Invalid option. Please try again.");
+                    Writer.WaitForKey();
                 }
             }
-            System.Console.Clear();
         }
 
         public async Task ShowSendMessageScreen(int senderId, int receiverId, string receiverName)
@@ -93,7 +97,7 @@ namespace MoodleApplication.Console.Views.Chats
             }
 
             Writer.WaitForKey();
-            System.Console.Clear();
+            
         }
 
         public async Task ShowMyChatRoomsMenu(int userId)
@@ -114,6 +118,8 @@ namespace MoodleApplication.Console.Views.Chats
             var chatRoomsMenuOptions = MenuOptions.CreateChatRoomsMenuOptions(this, userId, chatRooms);
             while (!exitRequested)
             {
+                System.Console.Clear();
+
                 Writer.DisplayMenu("Moodle - MY CHATS", chatRoomsMenuOptions);
                 var choice = Reader.ReadMenuChoice();
 
@@ -125,9 +131,9 @@ namespace MoodleApplication.Console.Views.Chats
                 {
                     System.Console.Clear();
                     Writer.WriteMessage("Invalid option. Please try again.");
+                    Writer.WaitForKey();
                 }
             }
-            System.Console.Clear();
         }
 
         public async Task ShowChatScreen(int currentUserId, int chatRoomId, int otherUserId, string otherUserName)
@@ -167,7 +173,6 @@ namespace MoodleApplication.Console.Views.Chats
                     await _chatActions.SendMessage(currentUserId, otherUserId, messageContent);
                 }
             }
-            System.Console.Clear();
         }
     }
 }

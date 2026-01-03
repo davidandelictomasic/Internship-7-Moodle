@@ -38,15 +38,14 @@ namespace MoodleApplication.Console.Views.Common
 
         public async Task RunAsync()
         {
-            InitializeManagers();
-
-            System.Console.Clear();
+            InitializeManagers();            
 
             bool exitRequested = false;
 
             var mainMenuOptions = MenuOptions.CreateStartMenuOptions(this);
             while (!exitRequested)
             {
+                System.Console.Clear(); 
                 Writer.DisplayMenu("Moodle - START MENU", mainMenuOptions);
                 var choice = Reader.ReadMenuChoice();
 
@@ -58,6 +57,7 @@ namespace MoodleApplication.Console.Views.Common
                 {
                     System.Console.Clear();
                     Writer.WriteMessage("Invalid option. Please try again.");
+                    Writer.WaitForKey();
                 }
             }
             System.Console.Clear();
@@ -74,6 +74,7 @@ namespace MoodleApplication.Console.Views.Common
 
             if (loginResult.IsSuccess)
             {
+                
                 Writer.WriteMessage("Login successful.");
                 Writer.WaitForKey();
 
@@ -121,6 +122,7 @@ namespace MoodleApplication.Console.Views.Common
             else
             {
                 Writer.WriteMessage("User registration failed.");
+                Writer.WaitForKey();
             }
         }
     }

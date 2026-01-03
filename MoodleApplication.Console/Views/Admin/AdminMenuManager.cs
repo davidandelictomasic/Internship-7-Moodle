@@ -19,13 +19,14 @@ namespace MoodleApplication.Console.Views.Admin
 
         public async Task ShowAdminMenu(int userId)
         {
-            System.Console.Clear();
 
             bool exitRequested = false;
 
             var adminMenuOptions = MenuOptions.CreateAdminMenuOptions(this, userId);
             while (!exitRequested)
             {
+                System.Console.Clear();
+
                 Writer.DisplayMenu("Moodle - ADMIN MENU", adminMenuOptions);
                 var choice = Reader.ReadMenuChoice();
 
@@ -37,9 +38,9 @@ namespace MoodleApplication.Console.Views.Admin
                 {
                     System.Console.Clear();
                     Writer.WriteMessage("Invalid option. Please try again.");
+                    Writer.WaitForKey();
                 }
             }
-            System.Console.Clear();
         }
 
         public async Task ShowPrivateChatMenu(int userId)
@@ -49,13 +50,14 @@ namespace MoodleApplication.Console.Views.Admin
 
         public async Task ShowEditUsersMenu()
         {
-            System.Console.Clear();
 
             bool exitRequested = false;
 
             var editUsersMenuOptions = MenuOptions.CreateEditUsersMenuOptions(this);
             while (!exitRequested)
             {
+                System.Console.Clear();
+
                 Writer.DisplayMenu("Moodle - EDIT USERS", editUsersMenuOptions);
                 var choice = Reader.ReadMenuChoice();
 
@@ -67,9 +69,9 @@ namespace MoodleApplication.Console.Views.Admin
                 {
                     System.Console.Clear();
                     Writer.WriteMessage("Invalid option. Please try again.");
+                    Writer.WaitForKey();
                 }
             }
-            System.Console.Clear();
         }
 
         public async Task ShowDeleteUserRoleSelectMenu()
@@ -89,13 +91,14 @@ namespace MoodleApplication.Console.Views.Admin
 
         private async Task ShowRoleSelectMenu(string action)
         {
-            System.Console.Clear();
 
             bool exitRequested = false;
 
             var roleSelectMenuOptions = MenuOptions.CreateRoleSelectMenuOptions(this, action);
             while (!exitRequested)
             {
+                System.Console.Clear();
+
                 Writer.DisplayMenu("Moodle - SELECT USER TYPE", roleSelectMenuOptions);
                 var choice = Reader.ReadMenuChoice();
 
@@ -107,10 +110,10 @@ namespace MoodleApplication.Console.Views.Admin
                 {
                     System.Console.Clear();
                     Writer.WriteMessage("Invalid option. Please try again.");
+                    Writer.WaitForKey();
                     
                 }
             }
-            System.Console.Clear();
         }
 
         public async Task ShowUserListForAction(UserRole role, string action)
@@ -131,6 +134,8 @@ namespace MoodleApplication.Console.Views.Admin
             var userListMenuOptions = MenuOptions.CreateUserListForActionMenuOptions(this, users, action, role);
             while (!exitRequested)
             {
+                System.Console.Clear();
+
                 var title = role == UserRole.Student ? "STUDENT LIST" : "PROFESSOR LIST";
                 Writer.DisplayMenu($"Moodle - {title}", userListMenuOptions);
                 var choice = Reader.ReadMenuChoice();
@@ -143,9 +148,9 @@ namespace MoodleApplication.Console.Views.Admin
                 {
                     System.Console.Clear();
                     Writer.WriteMessage("Invalid option. Please try again.");
+                    Writer.WaitForKey();
                 }
             }
-            System.Console.Clear();
         }
 
         public async Task ExecuteUserAction(int userId, string userName, string userEmail, string action, UserRole currentRole)
